@@ -1,4 +1,4 @@
-theme: jekyll-theme-minimal
+#theme: jekyll-theme-minimal
 Skip to content
  
 Search or jump to…
@@ -35,17 +35,17 @@ a1200bb 24 days ago
 # Review documentation to determine if you should use `theme` or `remote_theme`
 # https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/#installing-the-theme
 
-# theme                  : "minimal-mistakes-jekyll"
-# remote_theme           : "mmistakes/minimal-mistakes"
+ theme                  : "minimal-mistakes-jekyll"
+ remote_theme           : "mmistakes/minimal-mistakes"
 minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Site Title"
+title                    : "Mike Cvetanovich"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Your Name"
-description              : "An amazing website."
+name                     : "Mike Cvetanovich"
+description              : "My Project Site"
 url                      : https://mikecvetanovich.github.io/index.html"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -66,17 +66,17 @@ comments:
     num_posts            : # 5 (default)
     colorscheme          : # "light" (default), "dark"
   utterances:
-    theme                : # "github-light" (default), "github-dark"
-    issue_term           : # "pathname" (default)
+    theme                :  "github-light" (default), "github-dark"
+    issue_term           :  "pathname" (default)
 staticman:
   allowedFields          : # ['name', 'email', 'url', 'message']
   branch                 : # "master"
-  commitMessage          : # "New comment by {fields.name}"
-  filename               : # comment-{@timestamp}
-  format                 : # "yml"
-  moderation             : # true
+  commitMessage          :  "New comment by {fields.name}"
+  filename               :  comment-{@timestamp}
+  format                 :  "yml"
+  moderation             :  true
   path                   : # "/_data/comments/{options.slug}" (default)
-  requiredFields         : # ['name', 'email', 'message']
+  requiredFields         :  ['name', 'email', 'message']
   transforms:
     email                : # "md5"
   generatedFields:
@@ -132,9 +132,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "Mike Cvetanovich"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
+  bio              : "I am a Data Analyst"
   location         : "Somewhere"
   email            :
   links:
