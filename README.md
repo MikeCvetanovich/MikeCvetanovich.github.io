@@ -1,1 +1,1 @@
-https://mikecvetanovich.github.io/index.html
+https://mikecvetanovich.github.io
