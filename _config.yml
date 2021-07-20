@@ -4,5 +4,4 @@ show_downloads: true
 google_analytics:
 theme: jekyll-theme-hacker
 github: https://github.com/pages-themes/hacker.git
-  zip_url: https://github.com/pages-themes/hacker/archive/refs/heads/master.zip
-
+  
