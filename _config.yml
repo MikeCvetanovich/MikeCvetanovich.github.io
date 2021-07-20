@@ -1,27 +1,3 @@
-theme: jekyll-theme-minimal
-Skip to content
- 
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@MikeCvetanovich 
-Learn Git and GitHub without any code!
-Using the Hello World guide, you’ll start a branch, write comments, and open a pull request.
-
- 
-5,290
-112
-5,539 9,316 mmistakes/minimal-mistakes
- Code  Issues 8  Pull requests 0  Projects 0  Security  Insights
-minimal-mistakes/_config.yml
-@raviriley raviriley Allow Markdown in author bio (#2215)
-a1200bb 24 days ago
-@mmistakes @ohadschn @Pradhyo @yihangho @LoveMeWithoutAll @YuyingWu @westes @vlajos @tony-ho @rriemann @raviriley @nickgarlis @maxheld83 @maxime-michel @matiasfrndz @jeremyvoltz @thoemmi @hbarudin @rschaerer @gabor-meszaros @00-Evan @cdodd @4brunu
-297 lines (269 sloc)  8.57 KB
     
 # Welcome to Jekyll!
 #
@@ -46,8 +22,8 @@ title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Mike Cvetanovich"
 description              : "My Project Site"
-url                      : https://mikecvetanovich.github.io/index.html"
-baseurl                  : # the subpath of your site, e.g. "/blog"
+url                      : https://mikecvetanovich.github.io/index.html
+baseurl                  : https://mikecvetanovich.github.io/blog
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
