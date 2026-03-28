@@ -6,6 +6,8 @@
 <title>Mike Cvetanovich – Adventures with Microsoft Power Platform ©2025</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/jpeg" href="ElephantSunSet.jpg">
+<link rel="apple-touch-icon" href="ElephantSunSet.jpg">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -612,12 +614,45 @@ section {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .hero-inner { flex-direction: column; text-align: center; }
+  .hero-inner { flex-direction: column; text-align: center; gap: 1.5rem; }
   .hero-bio { margin-left: auto; margin-right: auto; }
-  nav { right: 15px; gap: 1rem; }
-  section { padding: 3rem 1.5rem; }
+  .hero { padding: 5rem 1.5rem 3rem; min-height: auto; }
+  nav { top: 8px; right: 12px; gap: 0.75rem; }
+  nav a { font-size: 0.7rem; letter-spacing: 1px; }
+  section { padding: 3rem 1rem; }
   .projects-grid { grid-template-columns: 1fr; }
-  .hero-image img { width: 140px; }
+  .hero-image img { width: 130px; }
+  .hero-text h1 { font-size: 1.6rem; }
+  .hero-text .tagline { font-size: 1.05rem; }
+  .hero-bio { font-size: 0.85rem; }
+  .section-label { font-size: 0.7rem; }
+  .org-name { font-size: 1.2rem; }
+  .card-body { padding: 1rem 1.25rem; }
+  .card-title { font-size: 1rem; }
+  .card-desc { font-size: 0.8rem; }
+  .modal-content { max-height: 90vh; margin: 0.5rem; border-radius: 4px; }
+  .modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+  .modal-title { font-size: 1.25rem; }
+  .modal-image { height: 180px; }
+  .detail-screenshots { gap: 0.5rem; }
+  .detail-screenshots img { height: 120px; }
+  .code-snippet { font-size: 0.65rem; padding: 0.75rem; max-height: 160px; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .certs-grid { grid-template-columns: 1fr; }
+  .footer-cta { font-size: 1.3rem; }
+  .footer-links { flex-direction: column; align-items: center; }
+  .page-frame { border-width: 2px; }
+}
+
+@media (max-width: 480px) {
+  .hero { padding: 4.5rem 1rem 2rem; }
+  .hero-image img { width: 110px; }
+  .hero-text h1 { font-size: 1.4rem; }
+  nav { gap: 0.5rem; }
+  nav a { font-size: 0.6rem; }
+  .card-image { height: 150px; }
+  .modal-overlay { padding: 0.5rem; }
+  .modal-image { height: 140px; }
 }
 
 /* ===== ANIMATIONS ===== */
@@ -688,9 +723,7 @@ section {
             </div>
           </div>
           <div class="detail-section"><div class="detail-label">Process Flow Diagram</div>
-            <div class="detail-screenshots">
-              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM_INSP_PROCESS_DIAGRAM.svg" alt="Process Flow Diagram" loading="lazy" style="height:220px;">
-            </div>
+            <div style="margin-top:0.5rem;"><a href="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM_INSP_PROCESS_DIAGRAM_V1.1.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border:1px solid #333;border-radius:4px;color:var(--copper-light);text-decoration:none;font-size:0.85rem;transition:border-color 0.3s;">📄 View Full Process Diagram (PDF)</a></div>
           </div>
           <div class="detail-section"><div class="detail-label">Data Model & Architecture</div>
             <div class="detail-screenshots">
