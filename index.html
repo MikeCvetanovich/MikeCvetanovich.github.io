@@ -459,6 +459,22 @@ section {
   overflow-y: auto;
 }
 
+/* ===== PDF LINK ===== */
+.pdf-link-wrap { margin-top: 0.5rem; }
+.pdf-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: var(--copper-light);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: border-color 0.3s;
+}
+.pdf-link:hover { border-color: var(--copper); }
+
 /* ===== SKILLS ===== */
 .skills-grid {
   display: grid;
@@ -616,7 +632,7 @@ section {
 @media (max-width: 768px) {
   .hero-inner { flex-direction: column; text-align: center; gap: 1.5rem; }
   .hero-bio { margin-left: auto; margin-right: auto; }
-  .hero { padding: 5rem 1.5rem 3rem; min-height: auto; }
+  .hero { padding: 5rem 1.5rem 3rem; min-height: 0; }
   nav { top: 8px; right: 12px; gap: 0.75rem; }
   nav a { font-size: 0.7rem; letter-spacing: 1px; }
   section { padding: 3rem 1rem; }
@@ -723,7 +739,7 @@ section {
             </div>
           </div>
           <div class="detail-section"><div class="detail-label">Process Flow Diagram</div>
-            <div style="margin-top:0.5rem;"><a href="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM_INSP_PROCESS_DIAGRAM_V1.1.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;border:1px solid #333;border-radius:4px;color:var(--copper-light);text-decoration:none;font-size:0.85rem;transition:border-color 0.3s;">📄 View Full Process Diagram (PDF)</a></div>
+            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM_INSP_PROCESS_DIAGRAM_V1.1.pdf" target="_blank" rel="noopener" class="pdf-link">📄 View Full Process Diagram (PDF)</a></div>
           </div>
           <div class="detail-section"><div class="detail-label">Data Model & Architecture</div>
             <div class="detail-screenshots">
