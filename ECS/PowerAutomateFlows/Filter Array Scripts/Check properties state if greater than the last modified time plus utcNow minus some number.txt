@@ -1,0 +1,9 @@
+@and(
+    equals(
+        item()?['properties/state'], 'Stopped'
+        ),
+        
+        greater(
+            item()?['properties/lastModifiedTime'], addDays(utcNow(), -120, 'yyyy-MM-dd')
+            )
+    )

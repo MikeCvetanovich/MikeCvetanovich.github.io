@@ -1,0 +1,22 @@
+USE [HRLFM]
+GO
+
+
+
+CREATE TABLE insp.StarRezBldgList
+(
+	StRz_KEY INT PRIMARY KEY IDENTITY (1,1),
+	StRz_Complex VARCHAR (50) NOT NULL,
+	StRz_BldgNum VARCHAR (50) NOT NULL,
+	StRz_UnitNum INT NOT NULL,
+	StRz_BedRm VARCHAR (50) NOT NULL,
+	StRz_Furnished BINARY NULL,
+	StRz_UnFurnished BINARY NULL,
+	StRz_Shared BINARY NULL,
+	StRz_Content_ID INT NOT NULL,
+	StRz_SortOrder INT NOT NULL,
+	StRz_Visible BINARY NOT NULL,
+	StRz_CreateDate DATETIME NOT NULL,
+	StRz_ModifiedDate TIMESTAMP NULL,
+	
+);

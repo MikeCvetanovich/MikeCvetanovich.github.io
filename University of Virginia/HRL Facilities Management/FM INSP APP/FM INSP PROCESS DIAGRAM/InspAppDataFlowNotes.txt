@@ -1,0 +1,38 @@
+--Draft
+
+Program process example from Inspection App start up:
+
+Login Office 365
+Grab CompID, FullName, Department 
+
+patch from app to database matching field names in OfficeAppTble
+insert into cells will trigger new PK id, and timestamp
+and trigger a stored proceedure to insert OfficeTableID into Inspection table
+
+App prompts user to select/search StarRezLookUp table
+Grab content_id
+Patch to database
+
+App prompts user to select Inspection ReasonType
+Grab InspReasonID
+patch database
+
+stored proceedure inserts foreign key selection into Inspection table 
+creating a new InspID auto increaments ID, trigger timestamp.
+
+
+stored-proceedure in OfficeAppTble triggers @@Indentity function that holds ID value
+insert OfficeTableID into Inspection foreign key.
+
+
+App prompts user to select Inspection LivingArea 
+Selection triggers App to patch selected LivAreaID value as foreign key in InspectByLivingArea table.
+
+Each further selection works in a similar way.  
+Stored proceedures will insert related foreign keys into the proper table as it relates to the single InspID for a specific location.
+
+
+
+
+
+

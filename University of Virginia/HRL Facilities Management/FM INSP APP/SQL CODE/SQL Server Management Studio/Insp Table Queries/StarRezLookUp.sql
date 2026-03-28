@@ -1,0 +1,11 @@
+/****** Script for Selection of RoomType command from SSMS  ******/
+SELECT [content_id]
+      ,[Unit]
+      ,[UnitType]
+      ,IIF([bedroom_1]=1,'TRUE','FALSE') AS [bedroom_1]
+      ,IIF([bedroom_2]=1,'TRUE','FALSE') AS [bedroom_2]
+      ,IIF([bedroom_3]=1,'TRUE','FALSE') AS [bedroom_3]
+      ,IIF([furnished_shared]=1,'TRUE','FALSE') AS [furnished_shared]
+      ,IIF([furnished]=1,'TRUE','FALSE') AS [furnished]
+      ,IIF([unfurnished]=1,'TRUE','FALSE') AS [unfurnished]
+  FROM [HRLFM].[insp].[StarRezLookUp]

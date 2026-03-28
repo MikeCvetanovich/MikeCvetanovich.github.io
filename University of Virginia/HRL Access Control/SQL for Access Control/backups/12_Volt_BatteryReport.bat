@@ -1,0 +1,1 @@
+C:\sqldeveloper\sqldeveloper\bin\sdcli64.exe reports generate -report "12 VOLT LOW BATTERY REPORT" -db CSGold_SQL_Connection -file "C:\sql_reports\BatteryReports\12_Volt_BatteryReport\12_Volt_BatteryReport.csv"

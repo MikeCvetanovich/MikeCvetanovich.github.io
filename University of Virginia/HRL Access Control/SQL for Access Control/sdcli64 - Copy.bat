@@ -1,0 +1,1 @@
+C:\Users\8900\Desktop\sqldeveloper\sqldeveloper\bin\sdcli64 reports generate -report "DAILY REPORT of Off-Line Doors" -db ORACLEGOLD.WORLD -FILE "C:\temp\offline.htlm"

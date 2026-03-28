@@ -1,0 +1,1 @@
+C:\sqldeveloper\sqldeveloper\bin\sdcli64.exe reports generate -report "HRL Offline Doors Report" -db CSGold_SQL_Connection -file "C:\sql_reports\offline_doors\offline_doors.csv"

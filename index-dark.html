@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mike Cvetanovich — Power Platform Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-card-hover: #181825;
+  --accent: #00e5ff;
+  --accent-dim: #00e5ff22;
+  --accent-mid: #00e5ff44;
+  --accent-glow: #00e5ff15;
+  --text: #e8e8ef;
+  --text-dim: #8888a0;
+  --text-muted: #555570;
+  --border: #1e1e2e;
+  --gradient-1: #00e5ff;
+  --gradient-2: #7b5cff;
+  --gradient-3: #ff3d71;
+  --tag-bg: #1a1a2e;
+  --tag-border: #2a2a40;
+  --success: #00e676;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== GRAIN OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  background: #0a0a0fcc;
+  border-bottom: 1px solid var(--border);
+}
+
+nav .logo {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+
+nav .logo span { color: var(--text-dim); }
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+nav a:hover { color: var(--accent); }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 6rem 2rem 4rem;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-mid), transparent);
+}
+
+.hero-content {
+  max-width: 900px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hero-label::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -2px;
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 .accent {
+  background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-bio {
+  font-size: 1.15rem;
+  color: var(--text-dim);
+  max-width: 640px;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  text-align: left;
+}
+
+.stat-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.25rem;
+}
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 4rem;
+}
+
+.section-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-tag::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.section-subtitle {
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  margin-top: 0.75rem;
+  font-weight: 300;
+  max-width: 600px;
+}
+
+/* ===== ORG DIVIDER ===== */
+.org-block {
+  margin-bottom: 5rem;
+}
+
+.org-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.org-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent-dim), var(--bg-card));
+  border: 1px solid var(--tag-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.org-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.org-role {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 0.15rem;
+}
+
+/* ===== PROJECT CARDS ===== */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.5rem;
+}
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  position: relative;
+}
+
+.project-card:hover {
+  border-color: var(--accent-mid);
+  background: var(--bg-card-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px -20px var(--accent-dim);
+}
+
+.project-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.project-card:hover::after { opacity: 1; }
+
+.card-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: var(--bg);
+  position: relative;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  transition: transform 0.5s;
+  opacity: 0.9;
+}
+
+.project-card:hover .card-image img {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.card-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #12121a, #1a1a2e);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-type {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  border-radius: 6px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+/* ===== PROJECT MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.modal-overlay.active {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  cursor: default;
+  position: relative;
+  animation: modalSlideUp 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.modal-image {
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+}
+
+.modal-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.modal-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  background: linear-gradient(135deg, #12121a, #1a1a2e);
+}
+
+.modal-body {
+  padding: 2rem 2.5rem 2.5rem;
+}
+
+.modal-type {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.modal-desc {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.modal-tags .tag {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.75rem;
+}
+
+.detail-section {
+  margin-bottom: 1.25rem;
+}
+
+.detail-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 0.5rem;
+}
+
+.detail-text {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.detail-screenshots {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.detail-screenshots img {
+  height: 160px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  object-fit: cover;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.detail-screenshots img:hover {
+  border-color: var(--accent);
+}
+
+.code-snippet {
+  background: #0d0d15;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.6;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+/* hidden detail in card, used as source */
+.project-detail {
+  display: none;
+}
+
+/* ===== SKILLS ===== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.skill-category {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: border-color 0.3s;
+}
+
+.skill-category:hover {
+  border-color: var(--accent-mid);
+}
+
+.skill-cat-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skill-cat-title .icon {
+  font-size: 1.2rem;
+}
+
+.skill-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.skill-tag {
+  font-size: 0.78rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--accent-glow);
+  border: 1px solid var(--accent-dim);
+  border-radius: 8px;
+  color: var(--text);
+  font-weight: 400;
+  transition: all 0.3s;
+}
+
+.skill-tag:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent-mid);
+}
+
+/* ===== CERTIFICATIONS ===== */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cert-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: border-color 0.3s;
+}
+
+.cert-card:hover { border-color: var(--accent-mid); }
+
+.cert-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.cert-info h4 { font-size: 0.9rem; font-weight: 500; }
+.cert-info p { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.15rem; }
+
+/* ===== FOOTER / CONTACT ===== */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 4rem 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
+.footer-cta {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+}
+
+.footer-sub {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  font-weight: 300;
+  margin-bottom: 2rem;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.footer-link:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+
+.footer-copy {
+  margin-top: 3rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ===== LIGHTBOX ===== */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000ee;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 2rem;
+}
+
+.lightbox.active { display: flex; }
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 0 80px #00e5ff22;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  nav ul { display: none; }
+  .hero { padding: 5rem 1.5rem 3rem; }
+  .hero-stats { gap: 2rem; }
+  section { padding: 4rem 1.5rem; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .org-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">MC<span>.dev</span></div>
+  <ul>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label animate-in">Power Platform Developer</div>
+    <h1 class="animate-in delay-1">
+      Mike<br><span class="accent">Cvetanovich</span>
+    </h1>
+    <p class="hero-bio animate-in delay-2">
+      Full-stack Power Platform developer with hands-on experience building enterprise Canvas Apps, Power Automate governance flows, and Power BI dashboards across federal (GCC) and higher education environments. I design end-to-end solutions — from SQL Server schemas and stored procedures to polished front-end apps and executive-ready analytics — that turn operational complexity into streamlined, data-driven workflows.
+    </p>
+    <div class="hero-stats animate-in delay-3">
+      <div class="stat">
+        <div class="stat-value">10+</div>
+        <div class="stat-label">Projects Delivered</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">3</div>
+        <div class="stat-label">Platform Pillars</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">GCC</div>
+        <div class="stat-label">Environment Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <div class="section-tag">Portfolio</div>
+    <h2 class="section-title">Selected Work</h2>
+    <p class="section-subtitle">Real solutions built for real organizations — click any project to explore details, architecture, and code.</p>
+  </div>
+
+  <!-- ===== UVA ===== -->
+  <div class="org-block">
+    <div class="org-header">
+      <div class="org-icon">🏛</div>
+      <div>
+        <div class="org-name">University of Virginia</div>
+        <div class="org-role">Housing & Residence Life — Application Developer</div>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- FM Inspection App -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/P1 OnStart and Tree View.png" alt="FM Inspection App" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🏗</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">Canvas App + SQL Server</div>
+          <div class="card-title">Facilities Management Inspection App</div>
+          <div class="card-desc">Full-stack Canvas App backed by a normalized SQL Server database with 30+ tables, stored procedures, and referential constraints for inspecting university housing facilities.</div>
+          <div class="card-tags">
+            <span class="tag">Canvas Apps</span>
+            <span class="tag">Power FX</span>
+            <span class="tag">SQL Server</span>
+            <span class="tag">Stored Procedures</span>
+            <span class="tag">Dataverse</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">The Challenge</div>
+            <div class="detail-text">UVA's Housing Facilities Management needed a way to conduct detailed inspections of dorm rooms, bathrooms, kitchens, and common areas — tracking fixtures, furniture, flooring, and room conditions across thousands of living spaces with full audit trails.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">My Solution</div>
+            <div class="detail-text">Designed and built a relational database schema (insp schema) with tables for every inspection component — bathrooms (shower, tub, vanity, sink, mirror, exhaust, accessories), kitchens, flooring, furniture, and room conditions. Canvas App front-end uses dynamic form modes, "Same Floor Throughout" logic, and collection-based caching for performance. Stored procedures handle foreign key insertion and identity propagation across related tables.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Architecture</div>
+            <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM INSP Data Model Schema.PNG" alt="Data Model" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/P2 Flows Listed.png" alt="Flows" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/Table Connections.png" alt="Connections" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+            </div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Code Sample — Power FX OnStart Schema Definition</div>
+            <div class="code-snippet">ClearCollect(ccFurniture,
+  ShowColumns(
+    Table(Defaults('[insp].[Furniture]')),
+    "FurnitureID","FurnDescriptionID",
+    "FurnManufID","FurnStyleID",
+    "FurnColorID","FurnCountID",
+    "FurnTableTypeID","FurnDiningChairCountID",
+    "FurnMattressDate","FurnInstallDate",
+    "FurnNote","Active","LivAreaTypeID",
+    "content_id","DateCreated","StarRezLivAreaID"
+));</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FM Inspection Power BI Reports -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="University of Virginia/HRL Facilities Management/FM Reports/FM INSP Report/P1 INSP FIXTURE DASHBOARD.png" alt="Inspection Dashboard" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📊</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">Power BI</div>
+          <div class="card-title">Inspection Fixture Conditions Dashboard</div>
+          <div class="card-desc">Multi-page Power BI report suite featuring fixture condition analysis, room ratings, photo counts by reason type, support animal tracking, and furniture inventory across all residential halls.</div>
+          <div class="card-tags">
+            <span class="tag">Power BI</span>
+            <span class="tag">DAX</span>
+            <span class="tag">SQL Views</span>
+            <span class="tag">Data Modeling</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Report Pages</div>
+            <div class="detail-text">7-page report covering: Fixture Dashboard overview, Inspection Review details, Room Ratings analytics, Photo Count & Reason Types breakdown, Support Animal tracking, and Furniture Inventory management.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Screenshots</div>
+            <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Facilities Management/FM Reports/FM INSP Report/P2 Inspection Review.png" alt="Inspection Review" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM Reports/FM INSP Report/P3 Room Ratings.png" alt="Room Ratings" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM Reports/FM INSP Report/P5 Photo Count & Reason Types.png" alt="Photo Count" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM Reports/FM INSP Report/P7 Furniture Inventory.png" alt="Furniture" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Work Order Dashboard -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="University of Virginia/HRL Facilities Management/FM Reports/FM Work Order DashBoard/Work Orders by Shop & Job Groups.png" alt="Work Order Dashboard" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🔧</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">Power BI</div>
+          <div class="card-title">Work Order Dashboard</div>
+          <div class="card-desc">Power BI dashboard tracking work orders by shop and job groups, with metric suggestions for facilities leadership to monitor maintenance trends across residential buildings.</div>
+          <div class="card-tags">
+            <span class="tag">Power BI</span>
+            <span class="tag">Operations Analytics</span>
+            <span class="tag">KPI Design</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Impact</div>
+            <div class="detail-text">Provided facilities management leadership with real-time visibility into maintenance operations, enabling data-driven staffing and resource allocation decisions.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student Move-In Status -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="University of Virginia/HRL Assignments/P1 Student Move-In Status - Not Checked In.png" alt="Move-In Status" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🎓</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">Power BI</div>
+          <div class="card-title">Student Move-In Status Tracker</div>
+          <div class="card-desc">Real-time Power BI report tracking student check-in status during move-in, with views for individual status, totals by complex, and totals by dorm building.</div>
+          <div class="card-tags">
+            <span class="tag">Power BI</span>
+            <span class="tag">StarRez Integration</span>
+            <span class="tag">Real-time Data</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Screenshots</div>
+            <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Assignments/P2 Student Move-In Status - Has Checked In.png" alt="Checked In" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="University of Virginia/HRL Assignments/P3 Student Move-In Status - Totals by Complex.png" alt="By Complex" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="University of Virginia/HRL Assignments/P4 Student Move-In Status - Totals by Dorm.png" alt="By Dorm" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RA Program Events -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/Flow - RA Program Event Approval screenshot.JPG" alt="RA Events" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📋</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">Canvas App + Power Automate + Power BI</div>
+          <div class="card-title">RA Program Event Tracker</div>
+          <div class="card-desc">End-to-end solution for Resident Advisors to submit, track, and report on program events — with approval workflows via Power Automate and a companion Power BI report with a .pbix file.</div>
+          <div class="card-tags">
+            <span class="tag">Canvas Apps</span>
+            <span class="tag">Power Automate</span>
+            <span class="tag">Power BI</span>
+            <span class="tag">Teams API</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Key Features</div>
+            <div class="detail-text">Teams app integration via API calls, automated approval flows, event tracking with status management, and Power BI reporting for residential life leadership.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RA Room Inspection App -->
+      <div class="project-card">
+        <div class="card-image">
+          <div class="card-image-placeholder">📱</div>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Canvas App + Power BI</div>
+          <div class="card-title">RA Room Inspection App</div>
+          <div class="card-desc">Mobile-optimized Canvas App for Resident Advisors to conduct room inspections, with companion Power BI report featuring desktop and mobile comparison views.</div>
+          <div class="card-tags">
+            <span class="tag">Canvas Apps</span>
+            <span class="tag">Mobile-First</span>
+            <span class="tag">Power BI</span>
+            <span class="tag">Responsive Design</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Design Approach</div>
+            <div class="detail-text">Built with a mobile-first UX for RAs using phones during walkthroughs. Power BI report designed with both desktop and mobile layouts for different stakeholder contexts.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Access Control & Mailroom -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="University of Virginia/HRL Conferences/Key Card Report.png" alt="Key Card Report" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🔐</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">SQL + Automation</div>
+          <div class="card-title">Access Control & Mailroom Systems</div>
+          <div class="card-desc">SQL-driven reporting for building access control (offline door monitoring, alarm logs) and mailroom staff arrival tracking, with batch scripts for automated report generation.</div>
+          <div class="card-tags">
+            <span class="tag">Oracle SQL</span>
+            <span class="tag">T-SQL</span>
+            <span class="tag">Batch Scripts</span>
+            <span class="tag">Diebold Integration</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Technical Depth</div>
+            <div class="detail-text">Wrote Oracle SQL queries against Diebold access control systems to track patron activity, key card usage, and door status. Built batch automation (.bat) for scheduled offline door reporting. Separate SQL scripts for mailroom time logging and student record management.</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Code Sample — Mailroom Time Logging (Oracle SQL)</div>
+            <div class="code-snippet">SELECT UNIQUE
+  "ACTIVITYTRANLEDGER"."TRANDATE" AS "TRANSDATE",
+  "PATRONINFO"."LASTNAME", 
+  "PATRONINFO"."FIRSTNAME", 
+  TO_CHAR("KEYMAPPINGINFO".KEYVALUE) AS "PIK ID",
+  "LOCATIONDESCRIPTION"."LONGDES" AS "DOOR DESCRIPTION"
+FROM "DIEBOLD"."ACTIVITYTRANLEDGER_VR"
+LEFT JOIN "DIEBOLD"."LOCATIONDESCRIPTION_VR" ...
+WHERE "ACTIVITYTRANLEDGER"."REASONMSG" = 'Approved'</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== ECS FEDERAL ===== -->
+  <div class="org-block">
+    <div class="org-header">
+      <div class="org-icon">🛡</div>
+      <div>
+        <div class="org-name">ECS Federal</div>
+        <div class="org-role">Power Platform Developer — GCC Environment</div>
+      </div>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- System Admin Governance Flow -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="ECS/PowerAutomateFlows/Screenshots of FLOW  Get All Sys Admin All Environments/20260112_104218.jpg" alt="Flow Screenshot" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>⚡</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">Power Automate</div>
+          <div class="card-title">Environment Governance — Sys Admin Discovery</div>
+          <div class="card-desc">Power Automate flow that discovers all system administrators across all Power Platform environments, supporting governance and compliance in a federal GCC tenant.</div>
+          <div class="card-tags">
+            <span class="tag">Power Automate</span>
+            <span class="tag">GCC</span>
+            <span class="tag">Governance</span>
+            <span class="tag">CoE Toolkit</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Screenshots</div>
+            <div class="detail-screenshots">
+              <img src="ECS/PowerAutomateFlows/Screenshots of FLOW  Get All Sys Admin All Environments/20260102_161330.jpg" alt="Flow 1" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="ECS/PowerAutomateFlows/Screenshots of FLOW  Get All Sys Admin All Environments/20260112_104519.jpg" alt="Flow 2" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+              <img src="ECS/PowerAutomateFlows/Screenshots of FLOW  Get All Sys Admin All Environments/20260112_104556.jpg" alt="Flow 3" onclick="event.stopPropagation();openLightbox(this.src)" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SharePoint URL Discovery -->
+      <div class="project-card">
+        <div class="card-image">
+          <img src="ECS/PowerAutomateFlows/Example Get All SharePoint URLs and Site Names.PNG" alt="SharePoint Flow" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🌐</div>'">
+        </div>
+        <div class="card-body">
+          <div class="card-type">Power Automate</div>
+          <div class="card-title">SharePoint Site Discovery Flow</div>
+          <div class="card-desc">Automated flow to enumerate all SharePoint site URLs and names across the tenant, supporting migration planning and site inventory governance.</div>
+          <div class="card-tags">
+            <span class="tag">Power Automate</span>
+            <span class="tag">SharePoint</span>
+            <span class="tag">Inventory</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Azure Key Vault Integration -->
+      <div class="project-card">
+        <div class="card-image">
+          <div class="card-image-placeholder">🔑</div>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Azure + Power Platform</div>
+          <div class="card-title">Azure Key Vault for Power Platform GCC</div>
+          <div class="card-desc">Documentation and implementation planning for integrating Azure Key Vault with Power Platform service accounts in a GCC environment — securing credentials and managing secrets for automated flows.</div>
+          <div class="card-tags">
+            <span class="tag">Azure Key Vault</span>
+            <span class="tag">GCC</span>
+            <span class="tag">Service Accounts</span>
+            <span class="tag">Security</span>
+          </div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section">
+            <div class="detail-label">Deliverables</div>
+            <div class="detail-text">Authored technical documentation covering Key Vault exploration, implementation guides for GCC service accounts, and formal request letters for Key Vault provisioning through the federal change management process.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- License Optimization -->
+      <div class="project-card">
+        <div class="card-image">
+          <div class="card-image-placeholder">💰</div>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Governance & Strategy</div>
+          <div class="card-title">Premium License Optimization</div>
+          <div class="card-desc">Developed strategies and presentations for identifying unused and incorrectly assigned Microsoft premium licenses, driving cost savings for the federal client.</div>
+          <div class="card-tags">
+            <span class="tag">License Management</span>
+            <span class="tag">Cost Optimization</span>
+            <span class="tag">PowerPoint</span>
+            <span class="tag">Governance</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Power BI Content Lifecycle -->
+      <div class="project-card">
+        <div class="card-image">
+          <div class="card-image-placeholder">📈</div>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Power BI Strategy</div>
+          <div class="card-title">Power BI Content Lifecycle Management</div>
+          <div class="card-desc">Implementation planning documentation for Power BI content lifecycle management, covering development, testing, and production deployment patterns for a federal environment.</div>
+          <div class="card-tags">
+            <span class="tag">Power BI</span>
+            <span class="tag">ALM</span>
+            <span class="tag">Deployment Pipelines</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOPs & Knowledge Base -->
+      <div class="project-card">
+        <div class="card-image">
+          <div class="card-image-placeholder">📝</div>
+        </div>
+        <div class="card-body">
+          <div class="card-type">Documentation & Process</div>
+          <div class="card-title">SOPs, Knowledge Base & Records Management</div>
+          <div class="card-desc">Created a shareable knowledge base, standard operating procedures for service account management, records management documentation aligned with General Records Schedule (GRS), and technical guides for the support team.</div>
+          <div class="card-tags">
+            <span class="tag">SOPs</span>
+            <span class="tag">Knowledge Base</span>
+            <span class="tag">Confluence</span>
+            <span class="tag">Records Management</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <div class="section-tag">Capabilities</div>
+    <h2 class="section-title">Technical Skills</h2>
+  </div>
+
+  <div class="skills-grid">
+    <div class="skill-category">
+      <div class="skill-cat-title"><span class="icon">⚡</span> Power Platform</div>
+      <div class="skill-items">
+        <span class="skill-tag">Canvas Apps</span>
+        <span class="skill-tag">Model-Driven Apps</span>
+        <span class="skill-tag">Power Automate</span>
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Power FX</span>
+        <span class="skill-tag">Dataverse</span>
+        <span class="skill-tag">Power Pages</span>
+        <span class="skill-tag">CoE Toolkit</span>
+        <span class="skill-tag">Environment Management</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title"><span class="icon">🗄</span> Data & Backend</div>
+      <div class="skill-items">
+        <span class="skill-tag">SQL Server (T-SQL)</span>
+        <span class="skill-tag">Oracle SQL</span>
+        <span class="skill-tag">Stored Procedures</span>
+        <span class="skill-tag">Database Design</span>
+        <span class="skill-tag">DAX</span>
+        <span class="skill-tag">Data Modeling</span>
+        <span class="skill-tag">ETL / Dataflows</span>
+        <span class="skill-tag">JSON / REST APIs</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title"><span class="icon">☁</span> Cloud & Security</div>
+      <div class="skill-items">
+        <span class="skill-tag">Azure Key Vault</span>
+        <span class="skill-tag">GCC / GCC High</span>
+        <span class="skill-tag">SharePoint Online</span>
+        <span class="skill-tag">Microsoft Teams</span>
+        <span class="skill-tag">Dynamics 365</span>
+        <span class="skill-tag">Service Accounts</span>
+        <span class="skill-tag">Entra ID</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-cat-title"><span class="icon">🛠</span> Tools & Process</div>
+      <div class="skill-items">
+        <span class="skill-tag">SSMS</span>
+        <span class="skill-tag">Confluence</span>
+        <span class="skill-tag">SOP Development</span>
+        <span class="skill-tag">License Optimization</span>
+        <span class="skill-tag">Records Management</span>
+        <span class="skill-tag">StarRez</span>
+        <span class="skill-tag">Diebold Access Control</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="certs-grid">
+    <div class="cert-card">
+      <div class="cert-icon">🎓</div>
+      <div class="cert-info">
+        <h4>Microsoft Data Science Orientation</h4>
+        <p>EdX / Microsoft</p>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">📜</div>
+      <div class="cert-info">
+        <h4>LinkedIn Learning Certifications</h4>
+        <p>Professional Development</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<footer class="footer" id="contact">
+  <div class="footer-cta">Let's build something.</div>
+  <div class="footer-sub">Open to full-time roles, contract work, and consulting in Power Platform development.</div>
+  <div class="footer-links">
+    <a href="mailto:cvetanovich@gmail.com" class="footer-link">✉ Email</a>
+    <a href="https://linkedin.com/in/cvetanovich" class="footer-link" target="_blank">🔗 LinkedIn</a>
+    <a href="Mike_Cvetanovich_Resume_3252026.pdf" class="footer-link" target="_blank">📄 Resume</a>
+  </div>
+  <div class="footer-copy">© 2026 Mike Cvetanovich. Built with purpose.</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="projectModal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-image" id="modalImage"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+  <img id="lightbox-img" src="" alt="Expanded view">
+</div>
+
+<script>
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.classList.add('active');
+}
+
+function openModal(card) {
+  const modal = document.getElementById('projectModal');
+  const modalImage = document.getElementById('modalImage');
+  const modalBody = document.getElementById('modalBody');
+
+  // Get card data
+  const imgEl = card.querySelector('.card-image img');
+  const placeholder = card.querySelector('.card-image-placeholder');
+  const type = card.querySelector('.card-type').textContent;
+  const title = card.querySelector('.card-title').textContent;
+  const desc = card.querySelector('.card-desc').textContent;
+  const tags = card.querySelector('.card-tags').innerHTML;
+  const detail = card.querySelector('.project-detail');
+
+  // Build image
+  if (imgEl && imgEl.naturalWidth > 0) {
+    modalImage.innerHTML = '<img src="' + imgEl.src + '" alt="' + title + '">';
+  } else if (placeholder) {
+    modalImage.innerHTML = '<div class="modal-image-placeholder">' + placeholder.textContent + '</div>';
+  } else {
+    modalImage.innerHTML = '<div class="modal-image-placeholder">📁</div>';
+  }
+
+  // Build body
+  let html = '<div class="modal-type">' + type + '</div>';
+  html += '<div class="modal-title">' + title + '</div>';
+  html += '<div class="modal-desc">' + desc + '</div>';
+  html += '<div class="modal-tags">' + tags + '</div>';
+  if (detail) {
+    html += detail.innerHTML;
+  }
+  modalBody.innerHTML = html;
+
+  // Re-bind lightbox clicks inside modal
+  modalBody.querySelectorAll('.detail-screenshots img').forEach(img => {
+    img.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openLightbox(this.src);
+    });
+  });
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('projectModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Bind cards
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', function(e) {
+    if (e.target.closest('.detail-screenshots')) return;
+    openModal(this);
+  });
+});
+
+// Smooth scroll for nav
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Intersection Observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.project-card, .skill-category, .cert-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>

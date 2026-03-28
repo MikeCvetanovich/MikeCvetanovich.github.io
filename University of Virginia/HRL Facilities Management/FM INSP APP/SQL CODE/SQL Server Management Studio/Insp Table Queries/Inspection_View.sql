@@ -1,0 +1,16 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (1000) [InspID]
+      ,[InspDate]
+      ,[CompID]
+      ,[FullName]
+      ,[InspReasonType]
+      ,[content_id]
+      ,[Unit]
+      ,[FixtureTypeDesc]
+      ,[ConditionRating]
+      ,[FixtureCondNote]
+      ,[DamageNotes]
+      ,[LivAreaTypeID]
+      ,[LivAreaDecription]
+  FROM [HRLFM].[insp].[Inspection_View]
+  order by InspID desc

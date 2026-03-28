@@ -1,0 +1,1 @@
+C:\sqldeveloper\sqldeveloper\bin\sdcli64.exe format input=C:\sql_reports\codeformater\codeformater.sql output=C:\sql_reports\codeformater\offlinedoors_output.sql

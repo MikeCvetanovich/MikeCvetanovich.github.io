@@ -1,0 +1,16 @@
+Set( Style, {
+    Primary:"#70daef",
+    Secondary:"#8fcad6",
+    Tertiary:"#ededed",
+    PrimaryTextColor:"#000000",
+    Logo:"http://pngimg.com/uploads/microsoft/microsoft_PNG16.png"
+});
+
+ClearCollect(vEnvironments, Filter(Environments, 'Environment Deleted' = 'Environment Deleted (Environments)'.No));
+
+//get app maker url
+Set(EnvVarDefnID, LookUp('Environment Variable Definitions', 'Schema Name'="admin_PowerAppEnvironmentVariable").'Environment Variable Definition');
+Set(theAppMakerURL, First(Filter('Environment Variable Values', 'Environment Variable Definition'.'Environment Variable Definition'=GUID(EnvVarDefnID))).Value);
+If(IsBlank(theAppMakerURL), Set(theAppMakerURL, LookUp('Environment Variable Definitions', 'Environment Variable Definition'=GUID(EnvVarDefnID)).'Default Value'));
+
+Set(SearchScreenNumber, 1);
