@@ -347,6 +347,7 @@ section {
   width: 100%;
   height: 260px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .modal-image img {
@@ -665,7 +666,7 @@ section {
 
       <div class="project-card">
         <div class="card-image">
-          <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/P1 OnStart and Tree View.png" alt="FM Inspection App" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🏗</div>'">
+          <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/01-HRL_InspectionApp_TabletMode.jpg" alt="FM Inspection App" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🏗</div>'">
         </div>
         <div class="card-body">
           <div class="card-type">Canvas App + SQL Server</div>
@@ -678,9 +679,23 @@ section {
         <div class="project-detail">
           <div class="detail-section"><div class="detail-label">The Challenge</div><div class="detail-text">UVA's Housing Facilities Management needed a way to conduct detailed inspections of dorm rooms, bathrooms, kitchens, and common areas — tracking fixtures, furniture, flooring, and room conditions across thousands of living spaces with full audit trails.</div></div>
           <div class="detail-section"><div class="detail-label">My Solution</div><div class="detail-text">Designed and built a relational database schema (insp schema) with tables for every inspection component — bathrooms (shower, tub, vanity, sink, mirror, exhaust, accessories), kitchens, flooring, furniture, and room conditions. Canvas App front-end uses dynamic form modes, "Same Floor Throughout" logic, and collection-based caching for performance.</div></div>
-          <div class="detail-section"><div class="detail-label">Architecture</div>
+          <div class="detail-section"><div class="detail-label">App Screenshots</div>
             <div class="detail-screenshots">
-              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM INSP Data Model Schema.PNG" alt="Data Model" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/02-HRL_InspectionApp_TabletMode_PhotoHistoryBuildingSearch.jpg" alt="Photo History Building Search" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/03-HRL_InspectionApp_TabletMode_SelectAvailablePhotoHistory.jpg" alt="Select Available Photo History" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/04-HRL_InspectionApp_TabletMode_PhotoHistoryByDisplayedByRoom.jpg" alt="Photo History By Room" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/05-HRL_InspectionApp_TabletMode_PhotoHistory_KitchenExample.jpg" alt="Photo History Kitchen Example" loading="lazy">
+            </div>
+          </div>
+          <div class="detail-section"><div class="detail-label">Process Flow Diagram</div>
+            <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM_INSP_PROCESS_DIAGRAM.svg" alt="Process Flow Diagram" loading="lazy" style="height:220px;">
+            </div>
+          </div>
+          <div class="detail-section"><div class="detail-label">Data Model & Architecture</div>
+            <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/HRLFM INSP Data Model Schema.PNG" alt="Data Model Schema" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/P1 OnStart and Tree View.png" alt="OnStart and Tree View" loading="lazy">
               <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/P2 Flows Listed.png" alt="Flows" loading="lazy">
               <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/Table Connections.png" alt="Connections" loading="lazy">
             </div>
@@ -960,6 +975,16 @@ function openModal(card) {
       openLightbox(this.src);
     });
   });
+
+  // Make modal top image clickable for lightbox
+  const modalTopImg = modalImage.querySelector('img');
+  if (modalTopImg) {
+    modalTopImg.style.cursor = 'zoom-in';
+    modalTopImg.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openLightbox(this.src);
+    });
+  }
 
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
