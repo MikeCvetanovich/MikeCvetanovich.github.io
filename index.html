@@ -443,6 +443,88 @@ section {
 
 .detail-screenshots img:hover { border-color: var(--copper); }
 
+/* ===== CAROUSEL ===== */
+.carousel {
+  position: relative;
+  margin-top: 0.5rem;
+  background: #050505;
+  border: 1px solid #222;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+
+.carousel-track img {
+  width: 100%;
+  flex-shrink: 0;
+  object-fit: contain;
+  max-height: 360px;
+  cursor: zoom-in;
+  background: #050505;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #444;
+  color: var(--copper-light);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  z-index: 5;
+}
+
+.carousel-btn:hover {
+  background: rgba(0,0,0,0.9);
+  border-color: var(--copper);
+}
+
+.carousel-btn-prev { left: 8px; }
+.carousel-btn-next { right: 8px; }
+
+.carousel-counter {
+  text-align: center;
+  padding: 0.4rem 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  padding-bottom: 0.5rem;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #333;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  padding: 0;
+}
+
+.carousel-dot.active {
+  background: var(--copper-light);
+}
+
 .code-snippet {
   background: #050505;
   border: 1px solid #1a1a1a;
@@ -662,6 +744,8 @@ section {
   .detail-screenshots { gap: 0.5rem; }
   .detail-screenshots img { height: 120px; }
   .code-snippet { font-size: 0.65rem; padding: 0.75rem; max-height: 160px; }
+  .carousel-track img { max-height: 250px; }
+  .carousel-btn { width: 30px; height: 30px; font-size: 0.85rem; }
   .skills-grid { grid-template-columns: 1fr; }
   .certs-grid { grid-template-columns: 1fr; }
   .footer-cta { font-size: 1.3rem; }
@@ -1039,15 +1123,80 @@ function openModal(card) {
   if (detail) html += detail.innerHTML;
   modalBody.innerHTML = html;
 
-  modalBody.querySelectorAll('.detail-screenshots img').forEach(img => {
-    img.addEventListener('click', function(e) {
-      e.stopPropagation();
-      openLightbox(this.src);
+  // Convert multi-image screenshot sections into carousels
+  modalBody.querySelectorAll('.detail-screenshots').forEach(function(container) {
+    var images = Array.from(container.querySelectorAll('img'));
+    if (images.length <= 1) {
+      // Single image — just bind lightbox click
+      images.forEach(function(img) {
+        img.addEventListener('click', function(e) { e.stopPropagation(); openLightbox(this.src); });
+      });
+      return;
+    }
+
+    // Build carousel
+    var carousel = document.createElement('div');
+    carousel.className = 'carousel';
+
+    var track = document.createElement('div');
+    track.className = 'carousel-track';
+
+    var srcs = images.map(function(img) { return { src: img.src, alt: img.alt }; });
+    srcs.forEach(function(s) {
+      var newImg = document.createElement('img');
+      newImg.src = s.src;
+      newImg.alt = s.alt;
+      newImg.loading = 'lazy';
+      newImg.addEventListener('click', function(e) { e.stopPropagation(); openLightbox(this.src); });
+      track.appendChild(newImg);
     });
+
+    var prevBtn = document.createElement('button');
+    prevBtn.className = 'carousel-btn carousel-btn-prev';
+    prevBtn.innerHTML = '&#8249;';
+    var nextBtn = document.createElement('button');
+    nextBtn.className = 'carousel-btn carousel-btn-next';
+    nextBtn.innerHTML = '&#8250;';
+
+    var counter = document.createElement('div');
+    counter.className = 'carousel-counter';
+
+    var dotsWrap = document.createElement('div');
+    dotsWrap.className = 'carousel-dots';
+    srcs.forEach(function(_, i) {
+      var dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', function(e) { e.stopPropagation(); goTo(i); });
+      dotsWrap.appendChild(dot);
+    });
+
+    carousel.appendChild(track);
+    carousel.appendChild(prevBtn);
+    carousel.appendChild(nextBtn);
+    carousel.appendChild(counter);
+    carousel.appendChild(dotsWrap);
+
+    var idx = 0;
+    function goTo(n) {
+      idx = n;
+      if (idx < 0) idx = srcs.length - 1;
+      if (idx >= srcs.length) idx = 0;
+      track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+      counter.textContent = (idx + 1) + ' / ' + srcs.length;
+      dotsWrap.querySelectorAll('.carousel-dot').forEach(function(d, i) {
+        d.className = 'carousel-dot' + (i === idx ? ' active' : '');
+      });
+    }
+
+    prevBtn.addEventListener('click', function(e) { e.stopPropagation(); goTo(idx - 1); });
+    nextBtn.addEventListener('click', function(e) { e.stopPropagation(); goTo(idx + 1); });
+    goTo(0);
+
+    container.replaceWith(carousel);
   });
 
   // Make modal top image clickable for lightbox
-  const modalTopImg = modalImage.querySelector('img');
+  var modalTopImg = modalImage.querySelector('img');
   if (modalTopImg) {
     modalTopImg.style.cursor = 'zoom-in';
     modalTopImg.addEventListener('click', function(e) {
