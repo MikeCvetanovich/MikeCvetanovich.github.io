@@ -840,6 +840,15 @@ section {
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XNFXS246MV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XNFXS246MV');
+</script>
 </head>
 <body>
 
@@ -1317,6 +1326,15 @@ function openModal(card) {
   const type = card.querySelector('.card-type').textContent;
   const title = card.querySelector('.card-title').textContent;
   const desc = card.querySelector('.card-desc').textContent;
+
+  // GA4 — track which project card was opened
+  const orgBlock = card.closest('.org-block');
+  const org = orgBlock ? orgBlock.querySelector('.org-name').textContent : 'Unknown';
+  gtag('event', 'project_card_open', {
+    project_name: title,
+    project_type: type,
+    organization: org
+  });
   const tags = card.querySelector('.card-tags').innerHTML;
   const detail = card.querySelector('.project-detail');
 
