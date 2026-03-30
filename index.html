@@ -902,6 +902,13 @@ section {
         <div class="project-detail">
           <div class="detail-section"><div class="detail-label">The Challenge</div><div class="detail-text">UVA's Housing Facilities Management needed a way to conduct detailed inspections of dorm rooms, bathrooms, kitchens, and common areas — tracking fixtures, furniture, flooring, and room conditions across thousands of living spaces with full audit trails.</div></div>
           <div class="detail-section"><div class="detail-label">My Solution</div><div class="detail-text">Designed and built a relational database schema (insp schema) with tables for every inspection component — bathrooms (shower, tub, vanity, sink, mirror, exhaust, accessories), kitchens, flooring, furniture, and room conditions. Canvas App front-end uses dynamic form modes, "Same Floor Throughout" logic, and collection-based caching for performance.</div></div>
+          <div class="detail-section"><div class="detail-label">Inspection Process, Logic Flow & Data Tables</div>
+            <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/01 HRL FM APARTMENT INSPECTION PROCESS.png" alt="HRL FM Apartment Inspection Process" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/02 HRL FM INSPECTIONS LOGIC FLOW CHART.png" alt="HRL FM Inspections Logic Flow Chart" loading="lazy">
+              <img src="University of Virginia/HRL Facilities Management/FM INSP APP/FM INSP PROCESS DIAGRAM/03 HRL FM INSPECTIONS DATA TABLES.png" alt="HRL FM Inspections Data Tables" loading="lazy">
+            </div>
+          </div>
           <div class="detail-section"><div class="detail-label">App Screenshots</div>
             <div class="detail-screenshots">
               <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/02-HRL_InspectionApp_TabletMode_PhotoHistoryBuildingSearch.jpg" alt="Photo History Building Search" loading="lazy">
@@ -1488,6 +1495,141 @@ document.querySelectorAll('.project-card, .skill-category, .cert-card').forEach(
   el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
   observer.observe(el);
 });
+
+/* =============================================
+   GA4 — COMPREHENSIVE EVENT TRACKING
+   ============================================= */
+
+// --- NAV LINK CLICKS ---
+document.querySelectorAll('nav a').forEach(a => {
+  a.addEventListener('click', function() {
+    gtag('event', 'nav_click', {
+      nav_target: this.getAttribute('href').replace('#', '')
+    });
+  });
+});
+
+// --- FOOTER LINK CLICKS (Email, LinkedIn, Resume) ---
+document.querySelectorAll('.footer-link').forEach(link => {
+  link.addEventListener('click', function() {
+    var href = this.getAttribute('href');
+    var label = 'unknown';
+    if (href.startsWith('mailto:')) label = 'email';
+    else if (href.includes('linkedin')) label = 'linkedin';
+    else if (href.toLowerCase().includes('resume')) label = 'resume_download';
+    gtag('event', 'footer_link_click', {
+      link_type: label,
+      link_url: href
+    });
+  });
+});
+
+// --- PDF LINK CLICKS (inside modals) ---
+document.addEventListener('click', function(e) {
+  var pdfLink = e.target.closest('.pdf-link');
+  if (pdfLink) {
+    var modal = pdfLink.closest('.modal-body');
+    var projectName = modal ? modal.querySelector('.modal-title').textContent : 'Unknown';
+    gtag('event', 'pdf_link_click', {
+      pdf_url: pdfLink.getAttribute('href'),
+      project_name: projectName
+    });
+  }
+});
+
+// --- VIDEO PLAYS ---
+document.addEventListener('play', function(e) {
+  if (e.target.tagName === 'VIDEO') {
+    var modal = e.target.closest('.modal-body');
+    var projectName = modal ? modal.querySelector('.modal-title').textContent : 'Unknown';
+    gtag('event', 'video_play', {
+      project_name: projectName,
+      video_src: e.target.querySelector('source') ? e.target.querySelector('source').getAttribute('src') : ''
+    });
+  }
+}, true);
+
+// --- LIGHTBOX OPENS (image zoom) ---
+var _origOpenLightbox = openLightbox;
+openLightbox = function(src, imageSet) {
+  var modal = document.getElementById('modalBody');
+  var projectName = modal && modal.querySelector('.modal-title') ? modal.querySelector('.modal-title').textContent : 'Unknown';
+  gtag('event', 'image_lightbox_open', {
+    image_src: src,
+    project_name: projectName
+  });
+  _origOpenLightbox(src, imageSet);
+};
+
+// --- CAROUSEL NAVIGATION ---
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('.carousel-btn');
+  if (btn) {
+    var modal = document.getElementById('modalBody');
+    var projectName = modal && modal.querySelector('.modal-title') ? modal.querySelector('.modal-title').textContent : 'Unknown';
+    var direction = btn.classList.contains('carousel-btn-prev') ? 'prev' : 'next';
+    gtag('event', 'carousel_navigate', {
+      project_name: projectName,
+      direction: direction
+    });
+  }
+});
+
+// --- SECTION SCROLL VISIBILITY ---
+var sectionObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      gtag('event', 'section_view', {
+        section_id: entry.target.id || entry.target.className
+      });
+      sectionObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('section[id], .hero, .footer').forEach(function(el) {
+  sectionObserver.observe(el);
+});
+
+// --- MODAL TIME SPENT ---
+var modalOpenTime = null;
+var modalOpenProject = null;
+
+var _origOpenModal = openModal;
+openModal = function(card) {
+  modalOpenTime = Date.now();
+  modalOpenProject = card.querySelector('.card-title').textContent;
+  _origOpenModal(card);
+};
+
+var _origCloseModal = closeModal;
+closeModal = function() {
+  if (modalOpenTime && modalOpenProject) {
+    var seconds = Math.round((Date.now() - modalOpenTime) / 1000);
+    gtag('event', 'modal_time_spent', {
+      project_name: modalOpenProject,
+      seconds_viewed: seconds
+    });
+    modalOpenTime = null;
+    modalOpenProject = null;
+  }
+  _origCloseModal();
+};
+
+// --- CODE SNIPPET SCROLL (engagement signal) ---
+document.addEventListener('scroll', function(e) {
+  if (e.target.classList && e.target.classList.contains('code-snippet')) {
+    if (!e.target.dataset.tracked) {
+      e.target.dataset.tracked = 'true';
+      var modal = e.target.closest('.modal-body');
+      var projectName = modal && modal.querySelector('.modal-title') ? modal.querySelector('.modal-title').textContent : 'Unknown';
+      gtag('event', 'code_snippet_scroll', {
+        project_name: projectName
+      });
+    }
+  }
+}, true);
+
 </script>
 
 </body>
