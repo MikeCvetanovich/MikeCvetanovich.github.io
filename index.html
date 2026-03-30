@@ -979,25 +979,31 @@ section {
       </div>
 
       <div class="project-card">
-        <div class="card-image"><img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/P1 Test Program Event APP .png" alt="RA Events" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📋</div>'"></div>
+        <div class="card-image"><img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/TOP Test Program Event APP .png" alt="RA Events" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📋</div>'"></div>
         <div class="card-body">
           <div class="card-type">Canvas App + Power Automate + Power BI</div>
           <div class="card-title">RA Program Event Tracker</div>
-          <div class="card-desc">End-to-end solution for Resident Advisors: event submission, Power Automate approval workflows, Teams API integration, and Power BI reporting.</div>
-          <div class="card-tags"><span class="tag">Canvas Apps</span><span class="tag">Power Automate</span><span class="tag">Power BI</span><span class="tag">Teams API</span></div>
+          <div class="card-desc">End-to-end solution for Resident Advisors to submit, approve, and track program events through a multi-stage workflow integrating Canvas Apps, Power Automate, SharePoint, Microsoft Planner, and Graph API.</div>
+          <div class="card-tags"><span class="tag">Canvas Apps</span><span class="tag">Power Automate</span><span class="tag">Power BI</span><span class="tag">Graph API</span><span class="tag">Planner</span><span class="tag">SharePoint</span></div>
         </div>
         <div class="project-detail">
-          <div class="detail-section"><div class="detail-label">Key Features</div><div class="detail-text">Teams app integration via Graph API calls, automated approval flows, event tracking with status management, and Power BI reporting for residential life leadership.</div></div>
+          <div class="detail-section"><div class="detail-label">Workflow</div><div class="detail-text">1. RA opens the Request Form tab in Teams and enters their CompID — the app queries StarRez via API to auto-populate the approval chain (Senior Resident → Resident Life Coordinator). 2. RA fills out the event request (name, dates, building, learning goals, estimated cost) and submits. 3. The SR receives an approval request via Teams chat and email with a link to the full SharePoint record. 4. Upon SR approval, a second approval triggers automatically to the RLC for final sign-off. 5. Final approval creates a Planner task (with bucket, priority, and due date), adds it to the RA’s Outlook To-Do list, and enables email notifications for late/upcoming tasks. 6. Events are viewable in Schedule, Board, and List views within the Teams channel.</div></div>
           <div class="detail-section"><div class="detail-label">App Screenshots</div>
             <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/TOP Test Program Event APP .png" alt="Welcome Page" loading="lazy">
               <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/P1 Test Program Event APP .png" alt="Program Event App" loading="lazy">
               <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/P2 Test Program Past Event View.png" alt="Past Event View" loading="lazy">
               <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/P3 Test Event Dynamic HTML Table view.png" alt="Dynamic HTML Table" loading="lazy">
-              <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/Flow - RA Program Event Approval screenshot.JPG" alt="Flow Approval" loading="lazy">
+            </div>
+          </div>
+          <div class="detail-section"><div class="detail-label">Approval Flow</div>
+            <div class="detail-screenshots">
+              <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/Flow - RA Program Event Approval screenshot.JPG" alt="Power Automate Approval Flow" loading="lazy">
             </div>
           </div>
           <div class="detail-section"><div class="detail-label">Documentation</div>
-            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/Overview Explaination of RA Program Event Tracker App using GRAPH API calls.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Overview — RA Program Event Tracker with Graph API</a></div>
+            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/Overview Explanation of RA Program Event App Workflow using GRAPH API calls.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Workflow Overview — Graph API Integration</a></div>
+            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Resident Life/RA Program Events/Explaination of the HRL ResLife Program Event Tracker Workflow.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Full Program Event Tracker Workflow</a></div>
           </div>
           <div class="detail-section"><div class="detail-label">Flow Test Demo</div>
             <div class="video-wrap"><video controls preload="metadata" class="video-player">
@@ -1009,7 +1015,7 @@ section {
       </div>
 
       <div class="project-card">
-        <div class="card-image"><img src="University of Virginia/HRL Resident Life/RA Tables and Power BI/P1 Team Power BI RA Room Inspection.png" alt="RA Room Inspection" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📱</div>'"></div>
+        <div class="card-image"><img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Room Inspection APP/RA Room Inspection App Screenshots/01_select_housing_area.png" alt="RA Room Inspection" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📱</div>'"></div>
         <div class="card-body">
           <div class="card-type">Canvas App + SharePoint + Power BI</div>
           <div class="card-title">RA Room Inspection App</div>
@@ -1031,21 +1037,20 @@ section {
           </div>
           <div class="detail-section"><div class="detail-label">Power BI Report</div>
             <div class="detail-screenshots">
-              <img src="University of Virginia/HRL Resident Life/RA Tables and Power BI/P1 Team Power BI RA Room Inspection.png" alt="RA Room Inspection Report" loading="lazy">
-              <img src="University of Virginia/HRL Resident Life/RA Tables and Power BI/P2 Team Power BI RA Room Inspection Table View.png" alt="Table View" loading="lazy">
-              <img src="University of Virginia/HRL Resident Life/RA Tables and Power BI/P3 Team Power BI RA Room Inspection Totals per Building.png" alt="Totals per Building" loading="lazy">
+              <img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Insp Teams SharePoint Tables and Power BI/P1 Team Power BI RA Room Inspection.png" alt="RA Room Inspection Report" loading="lazy">
+              <img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Insp Teams SharePoint Tables and Power BI/P2 Team Power BI RA Room Inspection Table View.png" alt="Table View" loading="lazy">
+              <img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Insp Teams SharePoint Tables and Power BI/P3 Team Power BI RA Room Inspection Totals per Building.png" alt="Totals per Building" loading="lazy">
             </div>
           </div>
           <div class="detail-section"><div class="detail-label">Data & Integration</div>
             <div class="detail-screenshots">
-              <img src="University of Virginia/HRL Resident Life/RA Tables and Power BI/SharePoint RA Room Inspection Table.png" alt="SharePoint Table" loading="lazy">
-              <img src="University of Virginia/HRL Resident Life/RA Tables and Power BI/SharePoint Results in Teams View.png" alt="Teams View" loading="lazy">
-              <img src="University of Virginia/HRL Resident Life/RA Tables and Power BI/Sample Photo Room Inspection.png" alt="Sample Photo" loading="lazy">
+              <img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Insp Teams SharePoint Tables and Power BI/SP1 SharePoint Results in Teams View.png" alt="Teams View" loading="lazy">
+              <img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Insp Teams SharePoint Tables and Power BI/SP2 SharePoint RA Room Inspection Table.png" alt="SharePoint Table" loading="lazy">
+              <img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Insp Teams SharePoint Tables and Power BI/SP3 Sample Photo Room Inspection.png" alt="Sample Photo" loading="lazy">
             </div>
           </div>
           <div class="detail-section"><div class="detail-label">Documentation</div>
             <div class="pdf-link-wrap"><a href="University of Virginia/HRL Resident Life/RA Room Inspections/RA Room Inspection APP/HRL RA Inspection App Overview for Users.pdf" target="_blank" rel="noopener" class="pdf-link">📄 App Overview for Users</a></div>
-            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Resident Life/RA Room Inspections/RA Room Inspection APP/HRL RA Inspection App Mobile Screenshots of Menu.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Mobile Menu Screenshots</a></div>
             <div class="pdf-link-wrap"><a href="University of Virginia/HRL Resident Life/RA Room Inspections/RA Room Inspection Report/HRL RA Inspection Power BI Report Highlights.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Power BI Report Highlights</a></div>
           </div>
         </div>
