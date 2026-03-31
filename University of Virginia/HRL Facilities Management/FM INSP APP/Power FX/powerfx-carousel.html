@@ -295,74 +295,134 @@ const files=[{name:"INSP APP OnStart APP SCHEMA DEF",ext:".fx",code:"--- /// ON 
 
 let currentIndex = 0;
 
-function highlight(code) {
-  return code.split('\n').map((line, i) => {
-    const num = i + 1;
-    let html = escapeHtml(line);
-    if (/^\s*(\/\/\/|\/\/)/.test(line)) {
-      return codeLine(num, '<span class="syn-comment">' + html + '</span>');
+// Syntax patterns for Power FX tokenizer - works on raw text, no HTML escaping needed
+var SYN_PATTERNS = [
+  { re: /(["'])(.*?)\1/, cls: 'syn-string' },
+  { re: /\b(Set|If|ClearCollect|Clear|Filter|LookUp|Navigate|UpdateContext|Concurrent|Defaults|ShowColumns|Table|LastN|CountRows|ForAll|Distinct|Reset|DateAdd|Weekday|Today|Day|Len|Left|Value|GUID|Ungroup|Blank|User|Now|ThisRecord)\b/, cls: 'syn-function' },
+  { re: /\b(true|false)\b/, cls: 'syn-bool' },
+  { re: /\b(FormMode\.View|FormMode\.New|FormMode\.Edit|FormMode|DisplayMode\.Edit|DisplayMode|Disabled|ScreenTransition\.None|TimeUnit\.Days|TimeUnit\.Months)\b/, cls: 'syn-keyword' },
+  { re: /\b(\d+)\b/, cls: 'syn-number' },
+  { re: /(&&|<=|>=|<>|<|>|=)/, cls: 'syn-operator' }
+];
+
+// Tokenize a line of raw code into {text, cls} segments using DOM-safe approach
+function tokenize(text) {
+  var result = [];
+  while (text.length > 0) {
+    var best = null;
+    var bestIdx = text.length;
+    for (var p = 0; p < SYN_PATTERNS.length; p++) {
+      var m = SYN_PATTERNS[p].re.exec(text);
+      if (m && m.index < bestIdx) {
+        bestIdx = m.index;
+        best = { match: m[0], cls: SYN_PATTERNS[p].cls, index: m.index };
+      }
     }
-    if (html.includes('//')) {
-      const idx = html.indexOf('//');
-      const before = html.substring(0, idx);
-      const comment = html.substring(idx);
-      html = highlightExpr(before) + '<span class="syn-comment">' + comment + '</span>';
-      return codeLine(num, html);
+    if (best) {
+      if (best.index > 0) result.push({ text: text.substring(0, best.index), cls: null });
+      result.push({ text: best.match, cls: best.cls });
+      text = text.substring(best.index + best.match.length);
+    } else {
+      result.push({ text: text, cls: null });
+      text = '';
     }
-    html = highlightExpr(html);
-    return codeLine(num, html);
-  }).join('');
+  }
+  return result;
 }
 
-function highlightExpr(html) {
-  html = html.replace(/(&quot;|"|&#39;|')([^"']*?)(&quot;|"|&#39;|')/g,
-    '<span class="syn-string">$1$2$3</span>');
-  const keywords = ['Set','If','ClearCollect','Clear','Filter','LookUp','Navigate','UpdateContext',
-    'Concurrent','Defaults','ShowColumns','Table','LastN','CountRows','ForAll','Distinct',
-    'Reset','DateAdd','Weekday','Today','Day','Len','Left','Value','GUID','Ungroup',
-    'Blank','User','Now','ThisRecord'];
-  keywords.forEach(kw => {
-    html = html.replace(new RegExp('\\b(' + kw + ')\\b', 'g'),
-      '<span class="syn-function">$1</span>');
-  });
-  html = html.replace(/\b(true|false)\b/g, '<span class="syn-bool">$1</span>');
-  const enums = ['FormMode\\.View','FormMode\\.New','FormMode\\.Edit','FormMode',
-    'DisplayMode\\.Edit','DisplayMode','Disabled',
-    'ScreenTransition\\.None','TimeUnit\\.Days','TimeUnit\\.Months'];
-  enums.forEach(en => {
-    html = html.replace(new RegExp('\\b(' + en + ')\\b', 'g'),
-      '<span class="syn-keyword">$1</span>');
-  });
-  html = html.replace(/\b(\d+)\b/g, '<span class="syn-number">$1</span>');
-  html = html.replace(/(&&|&lt;=|&gt;=|&lt;&gt;|&lt;|&gt;|=)/g,
-    '<span class="syn-operator">$1</span>');
-  return html;
-}
+// Build a single code line as a DOM element (no innerHTML for code text)
+function buildCodeLine(num, lineText, isFullComment) {
+  var row = document.createElement('div');
+  row.className = 'code-line';
 
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+  var numSpan = document.createElement('span');
+  numSpan.className = 'line-num';
+  numSpan.textContent = num;
+  row.appendChild(numSpan);
 
-function codeLine(num, content) {
-  return '<div class="code-line"><span class="line-num">' + num + '</span><span class="line-text">' + (content || ' ') + '</span></div>';
+  var textSpan = document.createElement('span');
+  textSpan.className = 'line-text';
+
+  if (isFullComment) {
+    var cs = document.createElement('span');
+    cs.className = 'syn-comment';
+    cs.textContent = lineText;
+    textSpan.appendChild(cs);
+  } else {
+    // Check for inline comment
+    var commentIdx = lineText.indexOf('//');
+    var codePart = commentIdx >= 0 ? lineText.substring(0, commentIdx) : lineText;
+    var commentPart = commentIdx >= 0 ? lineText.substring(commentIdx) : null;
+
+    var tokens = tokenize(codePart);
+    for (var t = 0; t < tokens.length; t++) {
+      var s = document.createElement('span');
+      s.textContent = tokens[t].text;
+      if (tokens[t].cls) s.className = tokens[t].cls;
+      textSpan.appendChild(s);
+    }
+    if (commentPart) {
+      var cs2 = document.createElement('span');
+      cs2.className = 'syn-comment';
+      cs2.textContent = commentPart;
+      textSpan.appendChild(cs2);
+    }
+  }
+
+  if (!textSpan.hasChildNodes()) textSpan.textContent = ' ';
+  row.appendChild(textSpan);
+  return row;
 }
 
 function render() {
-  const file = files[currentIndex];
-  const lines = file.code.split('\n').length;
-  document.getElementById('tabBar').innerHTML = files.map((f, i) =>
-    '<div class="tab ' + (i === currentIndex ? 'active' : '') + '" onclick="goTo(' + i + ')">' + f.name + '<span class="ext">' + f.ext + '</span></div>'
-  ).join('');
+  var file = files[currentIndex];
+  var codeLines = file.code.split('\n');
+
+  // Tabs
+  var tabBar = document.getElementById('tabBar');
+  tabBar.innerHTML = '';
+  for (var i = 0; i < files.length; i++) {
+    var tab = document.createElement('div');
+    tab.className = 'tab' + (i === currentIndex ? ' active' : '');
+    tab.textContent = files[i].name;
+    var ext = document.createElement('span');
+    ext.className = 'ext';
+    ext.textContent = files[i].ext;
+    tab.appendChild(ext);
+    tab.setAttribute('onclick', 'goTo(' + i + ')');
+    tabBar.appendChild(tab);
+  }
+
+  // Header
   document.getElementById('currentFileName').textContent = file.name + file.ext;
-  document.getElementById('lineCount').textContent = lines + ' lines';
-  document.getElementById('codeScroll').innerHTML =
-    '<div class="code-content active">' + highlight(file.code) + '</div>';
-  document.getElementById('codeScroll').scrollTop = 0;
-  document.getElementById('navDots').innerHTML = files.map((_, i) =>
-    '<div class="nav-dot ' + (i === currentIndex ? 'active' : '') + '" onclick="goTo(' + i + ')"></div>'
-  ).join('');
+  document.getElementById('lineCount').textContent = codeLines.length + ' lines';
+
+  // Code - built entirely with DOM APIs
+  var scroll = document.getElementById('codeScroll');
+  scroll.innerHTML = '';
+  var container = document.createElement('div');
+  container.className = 'code-content active';
+
+  for (var n = 0; n < codeLines.length; n++) {
+    var line = codeLines[n];
+    var isComment = /^\s*\/\//.test(line);
+    container.appendChild(buildCodeLine(n + 1, line, isComment));
+  }
+  scroll.appendChild(container);
+  scroll.scrollTop = 0;
+
+  // Dots
+  var dots = document.getElementById('navDots');
+  dots.innerHTML = '';
+  for (var d = 0; d < files.length; d++) {
+    var dot = document.createElement('div');
+    dot.className = 'nav-dot' + (d === currentIndex ? ' active' : '');
+    dot.setAttribute('onclick', 'goTo(' + d + ')');
+    dots.appendChild(dot);
+  }
   document.getElementById('navLabel').textContent = (currentIndex + 1) + ' / ' + files.length;
-  const activeTab = document.querySelector('.tab.active');
+
+  var activeTab = document.querySelector('.tab.active');
   if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 }
 
