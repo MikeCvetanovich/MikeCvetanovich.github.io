@@ -146,6 +146,50 @@ section {
   margin: 0 auto 3rem;
 }
 
+/* ===== ORG NAV ===== */
+.org-nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.org-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  padding: 1.25rem 2rem;
+  border: 1px solid var(--card-border);
+  border-radius: 4px;
+  background: var(--card-bg);
+  flex: 1;
+  max-width: 460px;
+  transition: all 0.35s ease;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
+.org-nav-link:hover {
+  border-color: var(--copper);
+  background: var(--card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(139,94,60,0.1);
+}
+
+.org-nav-role {
+  display: block;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
 /* ===== ORG BLOCKS ===== */
 .org-block {
   margin-bottom: 4rem;
@@ -821,6 +865,9 @@ section {
   .footer-cta { font-size: 1.3rem; }
   .footer-links { flex-direction: column; align-items: center; }
   .page-frame { border-width: 2px; }
+  .org-nav { flex-direction: column; gap: 0.75rem; }
+  .org-nav-link { max-width: 100%; padding: 1rem 1.25rem; font-size: 1.05rem; }
+  .org-nav-role { font-size: 0.7rem; }
 }
 
 @media (max-width: 480px) {
@@ -878,9 +925,13 @@ section {
 <section id="portfolio">
   <div class="section-label">Portfolio</div>
   <div class="section-divider"></div>
+  <div class="org-nav">
+    <a href="#org-uva" class="org-nav-link">University of Virginia<span class="org-nav-role">Housing & Residence Life — Application Developer</span></a>
+    <a href="#org-ecs" class="org-nav-link">ECS Federal<span class="org-nav-role">Power Platform Developer — GCC Environment</span></a>
+  </div>
 
   <!-- UVA -->
-  <div class="org-block">
+  <div class="org-block" id="org-uva">
     <div class="org-header">
       <div class="org-name">University of Virginia</div>
       <div class="org-role">Housing & Residence Life — Application Developer</div>
@@ -1147,7 +1198,7 @@ ORDER BY 1 ASC, 2 ASC</div>
   </div>
 
   <!-- ECS -->
-  <div class="org-block">
+  <div class="org-block" id="org-ecs">
     <div class="org-header">
       <div class="org-name">ECS Federal</div>
       <div class="org-role">Power Platform Developer — GCC Environment</div>
