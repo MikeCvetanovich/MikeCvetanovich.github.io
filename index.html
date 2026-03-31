@@ -146,50 +146,6 @@ section {
   margin: 0 auto 3rem;
 }
 
-/* ===== ORG NAV ===== */
-.org-nav {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
-
-.org-nav-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  padding: 1.25rem 2rem;
-  border: 1px solid var(--card-border);
-  border-radius: 4px;
-  background: var(--card-bg);
-  flex: 1;
-  max-width: 460px;
-  transition: all 0.35s ease;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text);
-  text-align: center;
-}
-
-.org-nav-link:hover {
-  border-color: var(--copper);
-  background: var(--card-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(139,94,60,0.1);
-}
-
-.org-nav-role {
-  display: block;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--text-muted);
-  margin-top: 0.35rem;
-}
-
 /* ===== ORG BLOCKS ===== */
 .org-block {
   margin-bottom: 4rem;
@@ -656,6 +612,8 @@ section {
   color: var(--text);
 }
 
+.section-label-spaced { margin-top: 3rem; }
+
 /* ===== CERTS ===== */
 .certs-grid {
   display: grid;
@@ -865,9 +823,6 @@ section {
   .footer-cta { font-size: 1.3rem; }
   .footer-links { flex-direction: column; align-items: center; }
   .page-frame { border-width: 2px; }
-  .org-nav { flex-direction: column; gap: 0.75rem; }
-  .org-nav-link { max-width: 100%; padding: 1rem 1.25rem; font-size: 1.05rem; }
-  .org-nav-role { font-size: 0.7rem; }
 }
 
 @media (max-width: 480px) {
@@ -916,7 +871,7 @@ section {
     <div class="hero-text">
       <h1>Mike Cvetanovich</h1>
       <div class="tagline">Adventures With Microsoft Power Platform</div>
-      <p class="hero-bio">Full-stack Power Platform developer building enterprise Canvas Apps, Power Automate governance flows, and Power BI dashboards across federal GCC and higher education environments. Focused on solution architecture, data modeling, and application lifecycle management.</p>
+      <p class="hero-bio">Power Platform developer building enterprise Canvas Apps, Power Automate governance flows, and Power BI dashboards across federal GCC and higher education environments. End-to-end solution delivery from data modeling and app development through automation and reporting.</p>
     </div>
   </div>
 </section>
@@ -925,10 +880,6 @@ section {
 <section id="portfolio">
   <div class="section-label">Portfolio</div>
   <div class="section-divider"></div>
-  <div class="org-nav">
-    <a href="#org-uva" class="org-nav-link">University of Virginia<span class="org-nav-role">Housing & Residence Life — Application Developer</span></a>
-    <a href="#org-ecs" class="org-nav-link">ECS Federal<span class="org-nav-role">Power Platform Developer — GCC Environment</span></a>
-  </div>
 
   <!-- UVA -->
   <div class="org-block" id="org-uva">
@@ -1304,9 +1255,26 @@ ORDER BY 1 ASC, 2 ASC</div>
     <div class="skill-category"><div class="skill-cat-title">Cloud & Security</div><div class="skill-items"><span class="skill-tag">Azure Key Vault</span><span class="skill-tag">GCC / GCC High</span><span class="skill-tag">SharePoint Online</span><span class="skill-tag">Microsoft Teams</span><span class="skill-tag">Dynamics 365</span><span class="skill-tag">Service Accounts</span><span class="skill-tag">Entra ID</span></div></div>
     <div class="skill-category"><div class="skill-cat-title">Tools & Process</div><div class="skill-items"><span class="skill-tag">SSMS</span><span class="skill-tag">Confluence</span><span class="skill-tag">SOP Development</span><span class="skill-tag">License Optimization</span><span class="skill-tag">Records Management</span><span class="skill-tag">StarRez</span><span class="skill-tag">Diebold Access Control</span></div></div>
   </div>
-  <div class="certs-grid">
-    <div class="cert-card"><div class="cert-icon">🎓</div><div class="cert-info"><h4>Microsoft Data Science Orientation</h4><p>EdX / Microsoft</p></div></div>
-    <div class="cert-card"><div class="cert-icon">📜</div><div class="cert-info"><h4>LinkedIn Learning Certifications</h4><p>Professional Development</p></div></div>
+  <div class="section-label section-label-spaced">Professional Development</div>
+  <div class="section-divider"></div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="card-image"><div class="card-image-placeholder">🎓</div></div>
+      <div class="card-body">
+        <div class="card-type">Certifications & Learning</div>
+        <div class="card-title">Microsoft Learn & Continuous Development</div>
+        <div class="card-desc">Actively pursuing Microsoft Power Platform certifications and expanding technical skills through structured learning paths, hands-on labs, and professional training.</div>
+        <div class="card-tags"><span class="tag">Microsoft Learn</span><span class="tag">Power Platform</span><span class="tag">PL-Series</span><span class="tag">Ongoing</span></div>
+      </div>
+      <div class="project-detail">
+        <div class="detail-section"><div class="detail-label">Certification Path</div><div class="detail-text">Targeting PL-100 (Power Platform App Maker), PL-200 (Power Platform Functional Consultant), PL-400 (Power Platform Developer), and PL-600 (Power Platform Solution Architect) — Microsoft's core certification track for Power Platform professionals.</div></div>
+        <div class="detail-section"><div class="detail-label">Microsoft Learn Profile</div>
+          <div class="pdf-link-wrap"><a href="https://learn.microsoft.com/en-us/users/mike-cvetanovich/" target="_blank" rel="noopener" class="pdf-link">🎓 View Microsoft Learn Profile</a></div>
+        </div>
+        <div class="detail-section"><div class="detail-label">Completed Training</div><div class="detail-text">Microsoft Data Science Orientation (EdX/Microsoft), LinkedIn Learning certifications in Power Platform administration, DAX, data modeling, and Power Automate development. Continuous self-study in Azure integration patterns, GCC compliance, and CoE Toolkit best practices.</div></div>
+        <div class="detail-section"><div class="detail-label">Areas of Focus</div><div class="detail-text">Solution architecture for enterprise Power Platform deployments, ALM and environment governance, Dataverse data modeling, custom connector development, and GCC/GCC High compliance patterns.</div></div>
+      </div>
+    </div>
   </div>
 </section>
 
