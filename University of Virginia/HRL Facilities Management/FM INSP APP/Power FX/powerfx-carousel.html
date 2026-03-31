@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FM Inspection App — Power FX Code</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --copper: #b87333;
+    --copper-light: #d4956a;
+    --copper-dark: #8a5528;
+    --copper-glow: rgba(184, 115, 51, 0.15);
+    --text: #e8e0d8;
+    --text-dim: #9a918a;
+    --code-bg: #0a0a0a;
+    --code-line-bg: #0f0e0d;
+    --code-line-hover: #141210;
+    --comment: #6a8a5e;
+    --keyword: #c9a26d;
+    --string: #8fb885;
+    --function: #d4956a;
+    --number: #b5cea8;
+    --operator: #9a918a;
+    --paren: #7a7068;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(184,115,51,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(184,115,51,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
+  }
+
+  .header { text-align: center; margin-bottom: 48px; }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    color: var(--copper-light);
+    margin-bottom: 8px;
+  }
+  .header .subtitle {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .header .divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--copper), transparent);
+    margin: 20px auto 0;
+  }
+
+  .carousel-wrapper { position: relative; }
+
+  .tab-bar {
+    display: flex;
+    gap: 2px;
+    overflow-x: auto;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex-shrink: 0;
+    padding: 10px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    background: #080808;
+    border: 1px solid #1a1816;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+    position: relative;
+  }
+  .tab:hover { color: var(--copper-light); background: #0d0c0a; }
+  .tab.active {
+    color: var(--copper);
+    background: var(--code-bg);
+    border-color: #2a2420;
+    border-bottom-color: var(--code-bg);
+    z-index: 2;
+  }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background: var(--copper);
+    border-radius: 2px 2px 0 0;
+  }
+  .tab .ext { color: var(--copper-dark); opacity: 0.6; }
+
+  .code-panel {
+    background: var(--code-bg);
+    border: 1px solid #2a2420;
+    border-radius: 0 8px 8px 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .code-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid #1a1816;
+    background: #070706;
+  }
+  .file-info { display: flex; align-items: center; gap: 10px; }
+  .file-icon {
+    width: 16px; height: 16px; border-radius: 3px;
+    background: linear-gradient(135deg, var(--copper-dark), var(--copper));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.55rem; font-weight: 700; color: #000;
+  }
+  .file-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; color: var(--text); font-weight: 400;
+  }
+  .line-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; color: var(--text-dim); opacity: 0.6;
+  }
+
+  .code-scroll {
+    max-height: 520px;
+    overflow-y: auto; overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #2a2420 transparent;
+  }
+  .code-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+  .code-scroll::-webkit-scrollbar-track { background: transparent; }
+  .code-scroll::-webkit-scrollbar-thumb { background: #2a2420; border-radius: 3px; }
+  .code-scroll::-webkit-scrollbar-thumb:hover { background: var(--copper-dark); }
+
+  .code-content { display: none; padding: 0; counter-reset: line; }
+  .code-content.active { display: block; }
+
+  .code-line {
+    display: flex; min-height: 22px; line-height: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem; font-weight: 300;
+    transition: background 0.15s ease;
+  }
+  .code-line:hover { background: var(--code-line-hover); }
+  .line-num {
+    flex-shrink: 0; width: 52px; text-align: right;
+    padding-right: 16px; color: #3a3530;
+    user-select: none; font-size: 0.68rem;
+    border-right: 1px solid #151310;
+  }
+  .line-text { padding-left: 16px; white-space: pre; color: var(--text); }
+
+  .syn-comment { color: var(--comment); font-style: italic; }
+  .syn-keyword { color: var(--keyword); font-weight: 500; }
+  .syn-function { color: var(--function); }
+  .syn-string { color: var(--string); }
+  .syn-number { color: var(--number); }
+  .syn-operator { color: var(--operator); }
+  .syn-paren { color: var(--paren); }
+  .syn-bool { color: #569cd6; }
+
+  .nav-controls {
+    display: flex; align-items: center; justify-content: center;
+    gap: 20px; margin-top: 28px;
+  }
+  .nav-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid #2a2420; background: #0a0908;
+    color: var(--copper);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.3s ease; font-size: 1.1rem;
+  }
+  .nav-btn:hover {
+    border-color: var(--copper);
+    background: var(--copper-glow);
+    transform: scale(1.08);
+  }
+  .nav-btn:active { transform: scale(0.96); }
+  .nav-indicator { display: flex; align-items: center; gap: 8px; }
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #1a1816; border: 1px solid #2a2420;
+    transition: all 0.3s ease; cursor: pointer;
+  }
+  .nav-dot.active {
+    background: var(--copper); border-color: var(--copper);
+    box-shadow: 0 0 8px rgba(184,115,51,0.4); transform: scale(1.2);
+  }
+  .nav-dot:hover:not(.active) { background: var(--copper-dark); border-color: var(--copper-dark); }
+  .nav-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: var(--text-dim);
+    margin: 0 8px; min-width: 40px; text-align: center;
+  }
+
+  .copy-btn {
+    padding: 5px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; color: var(--text-dim);
+    background: transparent; border: 1px solid #1a1816;
+    border-radius: 4px; cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .copy-btn:hover { color: var(--copper); border-color: var(--copper-dark); }
+  .copy-btn.copied { color: var(--string); border-color: var(--string); }
+
+  .code-content { animation: fadeSlideIn 0.35s ease; }
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 32px 12px 48px; }
+    .header h1 { font-size: 1.5rem; }
+    .tab { padding: 8px 12px; font-size: 0.65rem; }
+    .code-scroll { max-height: 400px; }
+    .code-line { font-size: 0.7rem; }
+    .line-num { width: 40px; padding-right: 10px; }
+    .line-text { padding-left: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>FM Inspection App</h1>
+    <div class="subtitle">Power FX Source Code</div>
+    <div class="divider"></div>
+  </div>
+  <div class="carousel-wrapper">
+    <div class="tab-bar" id="tabBar"></div>
+    <div class="code-panel">
+      <div class="code-panel-header">
+        <div class="file-info">
+          <div class="file-icon">fx</div>
+          <span class="file-name" id="currentFileName"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <span class="line-count" id="lineCount"></span>
+          <button class="copy-btn" id="copyBtn" onclick="copyCode()">Copy</button>
+        </div>
+      </div>
+      <div class="code-scroll" id="codeScroll"></div>
+    </div>
+    <div class="nav-controls">
+      <button class="nav-btn" onclick="navigate(-1)">&#8592;</button>
+      <div class="nav-indicator" id="navDots"></div>
+      <span class="nav-label" id="navLabel"></span>
+      <button class="nav-btn" onclick="navigate(1)">&#8594;</button>
+    </div>
+  </div>
+</div>
+<script>
+const files=[{name:"INSP APP OnStart APP SCHEMA DEF",ext:".fx",code:"--- /// ON START APP SCHEMA DEF\n\n\n\nClearCollect(\n    ccFurniture,\n    ShowColumns(\n        Table(Defaults('[insp].[Furniture]')),\n        \"FurnitureID\",\n        \"FurnDescriptionID\",\n        \"FurnManufID\",\n        \"FurnStyleID\",\n        \"FurnColorID\",\n        \"FurnCountID\",\n        \"FurnTableTypeID\",\n        \"FurnDiningChairCountID\",\n        \"FurnMattressDate\",\n        \"FurnInstallDate\",\n        \"FurnNote\",\n        \"Active\",\n        \"LivAreaTypeID\",\n        \"content_id\",\n        \"DateCreated\",\n        \"StarRezLivAreaID\"\n    )\n);\n\nClearCollect(\n    ccFurnitureView,\n    ShowColumns(\n        Table(Defaults('[insp].[FurnitureForm_View]')),\n        \"FurnViewID\",\n        \"FurnDescription\",\n        \"FurnManufDesc\",\n        \"FurnStyle\",\n        \"FurnColor\",\n        \"FurnCount\",\n        \"FurnTableType\",\n        \"ChairCount\",\n        \"FurnMattressDate\",\n        \"FurnInstallDate\",\n        \"FurnNote\",\n        \"Active\",\n        \"content_id\",\n        \"DateCreated\",\n        \"StarRezLivAreaID\"\n    )\n);\n\n/////////////\n\nClearCollect(\n    ccInspPhotoView,\n    ShowColumns(\n    Table(Defaults('insp.InspPhoto_View')),\n        \"CompID\",\n        \"InspID\",\n        \"content_id\",\n        \"Active\",\n        \"FullName\",\n        \"ImageTaken\",\n        \"InspDate\",\n        \"ImageID\",\n        \"InspReasonID\",\n        \"InspReasonType\",\n        \"LivAreaTypeID\",\n        \"LivAreaDecription\",\n        \"PhotoDateTime\",\n        \"PhotoNote\",\n        \"SetID\",\n        \"StarRezLivAreaID\",\n        \"Unit\"\n    )\n);\n\nClearCollect(ccLivingAreaRoomCond,\n    Defaults('[insp].[LivingAreaRoomCond]'),\n        {}\n);\n\nClearCollect(ccFloor,\n    Defaults('[insp].[Floor]'),\n        {}\n);\nClear(ccFloor);\n\nClearCollect(ccFloorView,\n    Defaults('[insp].[FloorForm_View]'),\n        {}\n);\nClear(ccFloorView);\n\n///////////\n\nClearCollect(\n    ccKitchen,\n    Defaults('[insp].[Kitchen]'),\n    {}\n\n);\nClear(ccKitchen);\n\nClearCollect(ccKitchenView, \n    Defaults('[insp].[KitchenForm_View]'),\n        {}\n);\nClear(ccKitchenView);\n\n///////////\n\nClearCollect(ccBathroom,\n    Defaults('[insp].[Bathroom]'),\n    {}\n);\nClear(ccBathroom);\n\nClearCollect(ccBathShower,\n    Defaults('[insp].[BathShower]'),\n    {}\n);\nClear(ccBathShower);\n\nClearCollect(ccBathTub,\n    Defaults('[insp].[BathTub]'),\n    {}\n);\nClear(ccBathTub);\n\nClearCollect(ccBathroomView,\n    Defaults('[insp].[FullBathroom_View]'),\n    {}\n);\nClear(ccBathroomView);\n\n\n\n\n\n/// ALL BATHROOM ITEM TABLES -- DEFINE SCHEMA\n\nClearCollect(ccBathRmAccessories,\n    Defaults('[insp].[BathRmAccessories]'),\n    {}\n);\nClear(ccBathRmAccessories);\n\nClearCollect(ccBathRmCommodeFlushType,\n    Defaults('[insp].[BathRmCommodeFlushType]'),\n    {}\n);\nClear(ccBathRmCommodeFlushType);\n\nClearCollect(ccBathRmCommodeMountType,\n    Defaults('[insp].[BathRmCommodeMountType]'),\n    {}\n);\nClear(ccBathRmCommodeMountType);\n\nClearCollect(ccBathRmExhaustFan,\n    Defaults('[insp].[BathRmExhaustFan]'),\n    {}\n);\nClear(ccBathRmExhaustFan);\n\nClearCollect(ccBathRmMirror,\n    Defaults('[insp].[BathRmMirror]'),\n    {}\n);\nClear(ccBathRmMirror);\n\nClearCollect(ccBathRmSink,\n    Defaults('[insp].[BathRmSink]'),\n    {}\n);\nClear(ccBathRmSink);\n\nClearCollect(ccBathRmSinkColor,\n    Defaults('[insp].[BathRmSinkColor]'),\n    {}\n);\nClear(ccBathRmSinkColor);\n\nClearCollect(ccBathRmVanity,\n    Defaults('[insp].[BathRmVanity]'),\n    {}\n);\nClear(ccBathRmVanity);\n\nClearCollect(ccBathRmVanityColor,\n    Defaults('[insp].[BathRmVanityColor]'),\n    {}\n);\nClear(ccBathRmVanityColor);\n\n/// SHOWER ITEMS\n\nClearCollect(ccBathShowerFlrMaterial,\n    Defaults('[insp].[BathShowerFlrMaterial]'),\n    {}\n);\nClear(ccBathShowerFlrMaterial);\n\n\nClearCollect(ccBathShowerOpening,\n    Defaults('[insp].[BathShowerOpening]'),\n    {}\n);\nClear(ccBathShowerOpening);\n\nClearCollect(ccBathShowerWallMaterial,\n    Defaults('[insp].[BathShowerWallMaterial]'),\n    {}\n);\nClear(ccBathShowerWallMaterial);\n\n/// TUB ITEMS\n\nClearCollect(ccBathTubFlrMaterial,\n    Defaults('[insp].[BathTubFlrMaterial]'),\n    {}\n);\nClear(ccBathTubFlrMaterial);\n\nClearCollect(ccBathTubOpening,\n    Defaults('[insp].[BathTubOpening]'),\n    {}\n);\nClear(ccBathTubOpening);\n\nClearCollect(ccBathTubWallMaterial,\n    Defaults('[insp].[BathTubWallMaterial]'),\n    {}\n);\nClear(ccBathTubWallMaterial);\n\n\nClearCollect(\n    ccLivingAreaRoomCondView,\n    ShowColumns(\n       Table(Defaults('[insp].[LivingAreaRoomCond_View]')),\n        \"InspID\",\n        \"StarRezLivAreaID\",\n        \"CompID\",\n        \"FullName\",\n        \"LivingAreaRoomCondView\",\n        \"content_id\",\n        \"Unit\",\n        \"LivAreaTypeID\",\n        \"LivAreaDecription\",\n        \"RmCondRating\",\n        \"RmCondNotes\"\n));\nClear(ccLivingAreaRoomCondView);\n\n\nClearCollect(ccInspectionReview,\n    Defaults('insp.InspectionReview'),\n    {}\n);\nClear(ccInspectionReview);"},{name:"INSP APP OnVisible Welcome Screen",ext:".fx",code:"//OnVisible Welcome Screen\n\nUpdateContext({LoadingSpinner: true });\nSet(ActiveRecord_InspReview, false );\nClear(ccFurnitureView);\nSet(Insp_History, false );\n\n//Get AppVersion info\nSet(InspAppId, GUID(\"08b2e19b-582b-4370-b147-83429812ea39\"));\nClearCollect(myAppVersions, PowerAppsforMakers.GetAppVersions(InspAppId) );\nClearCollect(myAppVersionsv2, Ungroup(myAppVersions, value));\nClearCollect(myAppVersionsv3, Filter(myAppVersionsv2, properties.lifeCycleId=\"Published\"));\n\nSet(PublishedLiveAppVersion, LookUp(myAppVersionsv2, properties.lifeCycleId=\"Published\").tags.publisherVersion);\nSet(PublishedVersionDate, LookUp(myAppVersionsv2, properties.lifeCycleId=\"Published\").properties.appVersion);\nClearCollect(myAppPublishedVersions, Filter(myAppVersionsv2, properties.appVersion<=PublishedVersionDate));\n\n//Set Fixture Submit Disable Button \nSet(DisableSubmitButton_LR, true );\nSet(DisableSubmitButton_Kitchen, true );\nSet(DisableSubmitButton_Bath, true );\nSet(DisableSubmitButton_Hall, true );\nSet(DisableSubmitButton_BR1, true );\nSet(DisableSubmitButton_BR2, true );\nSet(DisableSubmitButton_BR3, true );\nSet(DisableSubmitButton_Basement, true );\n\n//Set Completed checkmark labels default status \nSet(RoomCondCompletedLabel, false );\nSet(FixtureCondCompletedLabel, false );\nSet(FurnCompletedLabel, false );\nSet(FlrCompletedLabel, false );\nSet(KitchenCompletedLabel, false );\nSet(BathroomCompletedLabel, false );\n\n//Set AllGood Check Boxes default\nSet(AllGood_LR, false );\nSet(AllGood_Kitchen, false );\nSet(AllGood_Bath, false );\nSet(AllGood_Hall, false );\nSet(AllGood_BR1, false );\nSet(AllGood_BR2, false );\nSet(AllGood_BR3, false );\nSet(AllGood_Basement, false );\n\n//temp table storage loaded OnVisible Welcome Screen. \n//Sets Inventory Forms visible on startup\nSet(InventoryFormsVisible, true );\nClear(ccSupportAnimal);\nClear(ccRenovationStatus);\nClear(ccBidetApproval);\nClear(ccInspPhoto);\nClear(ccInspPhotoView);\nClear(ccInspectionReview);\n\nSet(ActiveRecord_RS, false);\nSet(ActiveRecord_SA, false);\nSet(ActiveRecord_BA, false);\n\nSet( _firstDayOfMonth, DateAdd( Today(), 1 - Day( Today() ), TimeUnit.Days ) );  \nSet( _firstDayInView, DateAdd( _firstDayOfMonth, -(Weekday(_firstDayOfMonth) - 1), TimeUnit.Days ) );\nSet( _lastDayOfMonth, DateAdd( DateAdd( _firstDayOfMonth, 1, TimeUnit.Months ), -1, TimeUnit.Days ) );\n\n//NoPhoto is used to set Flags in Photo History lookup.\nClearCollect(ccNoPhotos,\n    Filter(\n        'insp.NoPhotos',\n        content_id=content_id)\n    );\n    \n\n\n  Concurrent(\n    ClearCollect(ccInspection, '[insp].[Inspection]'),             \n    ClearCollect(ccInspectionReview, 'insp.InspectionReview'),\n    ClearCollect(ccInspReasonType,'[insp].[InspReasonType]'),\n    ClearCollect(ccLivingAreaType,'[insp].[LivingAreaType]'),\n    ClearCollect(ccFixtureType,'[insp].[FixtureType]'),\n\n    \n    ClearCollect(ccStarRezLookUp,\n            Filter('[insp].[StarRezLookUp]',content_id=content_id)),\n\n    // *** SA & RS Reports ***\n  \n    ClearCollect(ccRenovationStatus,'[insp].[RenovationStatus]'),\n    ClearCollect(ccSupportAnimal,'[insp].[SupportAnimal]'),\n    ClearCollect(ccBidetApproval,'insp.BidetApproval'),\n    \n\n    /// ALL BATHROOM ITEM TABLES\n    ClearCollect(ccBathRmAccessories, '[insp].[BathRmAccessories]'),\n    ClearCollect(ccBathRmCommodeFlushType, '[insp].[BathRmCommodeFlushType]'),\n    ClearCollect(ccBathRmCommodeMountType, '[insp].[BathRmCommodeMountType]'),\n    ClearCollect(ccBathRmExhaustFan, '[insp].[BathRmExhaustFan]'),\n    ClearCollect(ccBathRmMirror, '[insp].[BathRmMirror]'),\n    ClearCollect(ccBathRmSink, '[insp].[BathRmSink]'),\n    ClearCollect(ccBathRmSinkColor, '[insp].[BathRmSinkColor]'),\n    ClearCollect(ccBathRmVanity, '[insp].[BathRmVanity]'),\n    ClearCollect(ccBathRmVanityColor, '[insp].[BathRmVanityColor]'),\n    /// SHOWER ITEMS\n    ClearCollect(ccBathShowerFlrMaterial, '[insp].[BathShowerFlrMaterial]'),\n    ClearCollect(ccBathShowerOpening, '[insp].[BathShowerOpening]'),\n    ClearCollect(ccBathShowerWallMaterial, '[insp].[BathShowerWallMaterial]'),\n    /// TUB ITEMS\n    ClearCollect(ccBathTubFlrMaterial, '[insp].[BathTubFlrMaterial]'),\n    ClearCollect(ccBathTubOpening, '[insp].[BathTubOpening]'),\n    ClearCollect(ccBathTubWallMaterial, '[insp].[BathTubWallMaterial]'),\n\n        /// ALL KITCHEN ITEM TABLES\n    ClearCollect(ccKitCabinet, '[insp].[KitCabinet]'),\n    ClearCollect(ccKitCabinetColor, '[insp].[KitCabinetColor]'),\n    ClearCollect(ccKitCountertop, '[insp].[KitCountertop]'),\n    ClearCollect(ccKitCountertopColor, '[insp].[KitCounterColor]'), \n    ClearCollect(ccKitStove, '[insp].[KitStove]'),\n    ClearCollect(ccKitStoveColor, '[insp].[KitStoveColor]'),\n    ClearCollect(ccKitRefrigerator, '[insp].[KitRefrigerator]'),\n    ClearCollect(ccKitRefrigColor, '[insp].[KitRefrigColor]'),\n    ClearCollect(ccKitDishWasher, '[insp].[KitDishWasher]'),\n    ClearCollect(ccKitFan, '[insp].[KitExhaustFan]'),\n    ClearCollect(ccKitMicrowave, '[insp].[KitMicrowave]'),\n    ClearCollect(ccKitWasher, '[insp].[KitWasher]'),\n    ClearCollect(ccKitDryer, '[insp].[KitDryer]')\n\n\n);\n\n\n\n\n\n//Global variables from O365 AD\nSet(gvCompID,Left(User().Email,Len(User().Email)-13));\nSet(gvLoginDateTime,Now());\nSet(gvFullName,(User().FullName));\nSet(gvDepartment,(Office365Users.MyProfileV2().department)\n);\n\n//Will load InspectionType Selector after \"Apartment Inspection\" is selected.\nUpdateContext({InspReasonSelectVisible: false });\n\n//Will load Label after \"Apartment Inspection\" is selected.\nUpdateContext({InspReasonLabel: false });\nSet(gvContent_id,Blank());\nSet(gvStarRezCount,CountRows(ForAll(Distinct('[insp].[StarRezLookUp]',content_id), {Result: ThisRecord.Value})));\n\n\nUpdateContext({LoadingSpinner: false });"},{name:"ClearCollect_AllTables",ext:".fx",code:"/// Filter Floor records for this location\nClearCollect(ccFloor,\n    Defaults('[insp].[Floor]'),\n        LastN(\n            Filter('[insp].[Floor]', \n            content_id=gvContent_id\n            &&Active),\n            2)\n    );\n\n// Filter Floor View records for this location\nClearCollect(ccFloorView,\n    Defaults('[insp].[FloorForm_View]'),\n        LastN(\n            Filter('[insp].[FloorForm_View]', \n            content_id=gvContent_id\n            &&Active),\n            2)\n    );\n\n        \n// Filter  Furniture records for this location\nClearCollect(ccFurniture,\n    Defaults('[insp].[Furniture]'),\n        LastN(\n            Filter('[insp].[Furniture]', \n            content_id=gvContent_id\n            &&Active),\n            2)\n);\n\n/// Furniture View records for this location\nClearCollect(ccFurnitureView,\n    Defaults('[insp].[FurnitureForm_View]'),\n        LastN(\n            Filter('[insp].[FurnitureForm_View]', \n            content_id=gvContent_id\n            &&Active),\n            2)\n);\n\n//  Filter Kitchen \nClearCollect(ccKitchen,\n    Defaults('[insp].[Kitchen]'),\n        LastN(\n            Filter('[insp].[Kitchen]',\n            content_id=gvContent_id\n            &&Active),\n        2)\n);\n\n//  Filter Kitchen View\nClearCollect(ccKitchenView,\n    Defaults('[insp].[KitchenForm_View]'),\n        LastN(\n            Filter('[insp].[KitchenForm_View]',\n            content_id=gvContent_id\n            &&Active),\n        2)\n);\n\n// Filter Bathroom \nClearCollect(ccBathroom,\n    Defaults('[insp].[Bathroom]'),\n        LastN(\n            Filter('[insp].[Bathroom]',\n            content_id=gvContent_id\n            &&Active),\n        2)\n);\n\n// Filter Bathroom View \nClearCollect(ccBathroomView,\n    Defaults('[insp].[FullBathroom_View]'),\n        LastN(\n            Filter('[insp].[FullBathroom_View]',\n            content_id=gvContent_id\n            &&Active),\n        2)\n);\n\n\n\nClearCollect(ccInspectionReview,\n    Defaults('insp.InspectionReview'),\n    LastN(\n        Filter('insp.InspectionReview',\n        content_id=gvContent_id\n        &&Active),\n    5)\n);"},{name:"Dropdown_LandingPage_1_OnChange",ext:".fx",code:"Set(VarLivingAreaSelection, Dropdown_LandingPage_1.Selected.LivAreaTypeID);\nSet(gvCurrentRoomDesc, Dropdown_LandingPage_1.Selected.LivAreaDecription);\nSet(gvCurrentRoomID, Dropdown_LandingPage_1.Selected.LivAreaTypeID);\n\nIf(VarLivingAreaSelection=1, Navigate(LandingPage_Reports_Inventory),\nVarLivingAreaSelection=2,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true}),\nVarLivingAreaSelection=3,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true}),\nVarLivingAreaSelection=4,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true}),\nVarLivingAreaSelection=5,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true}),\nVarLivingAreaSelection=6,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true}),\nVarLivingAreaSelection=7,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true}),\nVarLivingAreaSelection=8,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true}),\nVarLivingAreaSelection=9,Navigate(InventoryItemsPage,ScreenTransition.None,{LoadingSpinner:true})\n\n);\n\nSet(LivRmDisplayMode, DisplayMode);\nSet(FurnDisplayMode, DisplayMode);\nSet(KitDisplayMode, DisplayMode);\nSet(BathDisplayMode, DisplayMode);\n\n\nIf(VarLivingAreaSelection=2||5||6||7||8||9,\n    Set(KitDisplayMode, Disabled)&&Set(BathDisplayMode, Disabled)\n);\nIf(VarLivingAreaSelection=3,\n    Set(KitDisplayMode, DisplayMode.Edit) && Set(FurnDisplayMode, Disabled) && Set(BathDisplayMode, Disabled)\n,\nIf(VarLivingAreaSelection=4,\n    Set(BathDisplayMode, DisplayMode.Edit) && Set(FurnDisplayMode, Disabled) && Set(KitDisplayMode, Disabled) \n));\n\nClearCollect(ccFloor,\n        LastN(\n            Filter('[insp].[Floor]', \n            content_id=gvContent_id\n            &&Active),\n            1)\n    );\n\n\nIf(VarLivingAreaSelection=3,\n    ClearCollect(ccKitchen,\n        LastN(\n            Filter('[insp].[Kitchen]', \n            content_id=gvContent_id\n            &&Active),\n            1)\n    )\n);\n\nIf(VarLivingAreaSelection=3,\nClearCollect(ccKitchenView,\n    Defaults('[insp].[KitchenForm_View]'),\n        LastN(\n            Filter('[insp].[KitchenForm_View]',\n            content_id=gvContent_id\n            &&Active),\n        1)\n    )\n);\n\nIf(VarLivingAreaSelection=4,\n    ClearCollect(ccBathroom,\n        LastN(\n            Filter('[insp].[Bathroom]', \n            content_id=gvContent_id\n            &&Active),\n            1)\n    )\n);\nIf(VarLivingAreaSelection=4,\n    ClearCollect(ccBathroomView,\n        LastN(\n            Filter('[insp].[FullBathroom_View]', \n            content_id=gvContent_id\n            &&Active),\n            1)\n    )\n);\n\nIf(VarLivingAreaSelection=2||5||6||7||8,\n    ClearCollect(ccFurniture,\n        LastN(\n            Filter('[insp].[Furniture]', \n            content_id=gvContent_id\n            &&Active),\n            20)\n    )\n);\n\n\nReset(Dropdown_LandingPage_1);"},{name:"InventorySelectionPage_OnViz",ext:".fx",code:"Set(ActiveRecord_Floor, false );\nSet(ActiveRecord_Furniture, false );\nSet(ActiveRecord_Kitchen, false );\nSet(ActiveRecord_Bathroom, false );\n\nSet(gvSameFlooring, true );\nSet(gvSameFlooring, false );\nSet(WasSameFlrThroughout, true );\nSet(WasSameFlrThroughout, false );\n\n\nSet(StartTimer_FloorRecord, false);\nSet(StartTimer_FurnitureRecord,false);\nSet(StartTimer_RoomCondRecord, false);\nSet(gvChangeBorderColor, false);\n\nClearCollect(ccFloor,\n        LastN(\n            Filter('[insp].[Floor]', \n            content_id=gvContent_id\n            &&Active),\n            1)\n    );\n\n\n    ClearCollect(ccKitchen,\n        LastN(\n            Filter('[insp].[Kitchen]', \n            content_id=gvContent_id\n            &&Active),\n            20)\n    );\n\n    ClearCollect(ccBathroom,\n        LastN(\n            Filter('[insp].[Bathroom]', \n            content_id=gvContent_id\n            &&Active),\n            20)\n    );\n    ClearCollect(ccBathroomView,\n        LastN(\n            Filter('[insp].[FullBathroom_View]', \n            content_id=gvContent_id\n            &&Active),\n            20)\n    );\n    ClearCollect(ccFurniture,\n        LastN(\n            Filter('[insp].[Furniture]', \n            content_id=gvContent_id\n            &&Active),\n            20)\n    );\n\n\n\n// *** Floor Form *** //\n//Check Floor is active record\nUpdateContext({PlayAudioNoteSameFloor: false });\n// Checks if SameFloorThroughout(SFT) is Active / this Inspection. \n\nSet(SFT_ActiveThisInsp, LookUp(\n    ShowColumns(ccFloor,\"FlrThroughoutFlag\",\"LivAreaTypeID\",\"Active\",\"content_id\",\"StarRezLivAreaID\"),\n    FlrThroughoutFlag\n    &&Active&&StarRezLivAreaID=gvStarRezLivAreaID&&content_id=gvContent_id&&LivAreaTypeID=gvCurrentRoomID)\n);\n\nSet(SFT_SetFalseByRoom,\nLookUp(ccFloor,\ncontent_id = gvContent_id\n&&LivAreaTypeID=gvCurrentRoomID\n&&FlrThroughoutFlag=false  \n&& Active)\n);\n\nSet(SFT_ActiveFlagAnyRoom,\nLookUp(ccFloor,\ncontent_id = gvContent_id\n&&FlrThroughoutFlag\n&& Active)\n);\n\nSet(SFT_ActiveRoomID,\nValue(SFT_ActiveFlagAnyRoom.LivAreaTypeID));\n\n\nIf(SFT_ActiveThisInsp.Active,\n   \n    If(SFT_ActiveThisInsp.FlrThroughoutFlag&&SFT_ActiveRoomID=gvCurrentRoomID,   \n        Set(gvSameFlooring, true )\n    )\n,\n\n    If(SFT_SetFalseByRoom.Active&&SFT_ActiveRoomID<>gvCurrentRoomID,\n        Set(WasSameFlrThroughout, true)        \n        )\n);\n\nIf(WasSameFlrThroughout,\n        Set(gvSameFlooring, false ),\n\n    If(SFT_ActiveRoomID=0,\n        Set(gvSameFlooring, false ),\n        Set(gvSameFlooring, true )\n    ) \n);\n\n\n\nIf(gvSameFlooring,\n        Set(LivAreaID,\n            LookUp(ccFloor,\n            content_id = gvContent_id\n            && Active)\n        );\n\n        If(LivAreaID.Active,\n        Set(ActiveRecord_Floor, true),\n        Set(ActiveRecord_Floor, false)\n        );\n,\n\n        Set(LivAreaID,\n            LookUp(ccFloor,\n            content_id = gvContent_id\n            && Active\n            && LivAreaTypeID=gvCurrentRoomID\n            )\n        );\n\n\n        If(LivAreaID.Active&&SFT_SetFalseByRoom.Active,\n            Set(ActiveRecord_Floor, true),\n            Set(ActiveRecord_Floor, false)\n        );\n);\n\n//Set Floor Default FormMode\nSet(FormMode_Floor, FormMode );\nSet(FormMode_Floor, FormMode.New );\n\nIf(ActiveRecord_Floor,\nSet(FormMode_Floor, FormMode.View ),\nSet(FormMode_Floor, FormMode.New ));\n\nIf(ActiveRecord_Floor,\nSet(FormMode_FloorViewMode, FormMode.View ),\nSet(FormMode_FloorViewMode, FormMode.New )\n);\n\n// *** Furniture Form *** //\nSet(\n    FurnitureFormContentID,\n    LookUp(\n        ccFurniture,\n        content_id = gvContent_id,\n        ThisRecord\n    )\n);\n\nSet(\n    FurnitureFormActive,\n    LookUp(\n        ccFurniture,\n        Active,\n        ThisRecord\n    )\n);\n\nSet(FurnLivAreaID,\n    LookUp(\n        ccFurniture,\n        LivAreaTypeID=VarLivingAreaSelection,\n        ThisRecord\n    )\n);\n\nIf(\nFurnitureFormContentID.content_id=gvContent_id&&FurnitureFormActive.Active&&FurnLivAreaID.LivAreaTypeID=gvCurrentRoomID,\n    Set(\n        ActiveRecord_Furniture,\n        true\n    ),\n    Set(\n        ActiveRecord_Furniture,\n        false\n    )\n);\n\n//Set Furniture FormMode's\nSet(FormMode_Furniture, FormMode );\nSet(FormMode_FurnitureViewMode, FormMode );\n\nIf(ActiveRecord_Furniture,\nSet(FormMode_Furniture, FormMode.View),\nSet(FormMode_Furniture,FormMode.New));\n\nIf(ActiveRecord_Furniture,\nSet(FormMode_FurnitureViewMode, FormMode.View),\nSet(FormMode_FurnitureViewMode,FormMode.New));\n\n// *** Kitchen Form *** //\nSet(\n    KitchenFormContentID,\n    LookUp(\n        ccKitchen,\n        content_id=gvContent_id\n        &&Active,\n        ThisRecord\n    )\n);\nSet(KitchenLivAreaID,\n    LookUp(\n        ccKitchen,\n        LivAreaTypeID=VarLivingAreaSelection,\n        ThisRecord\n    )\n);\n\nIf(KitchenFormContentID.Active&&KitchenLivAreaID.LivAreaTypeID=VarLivingAreaSelection,\n\n    Set(\n        ActiveRecord_Kitchen,\n        true\n    ),\n    Set(\n        ActiveRecord_Kitchen,\n        false\n    )\n);\n\nIf(ActiveRecord_Kitchen,\nSet(FormMode_KitchenForm, FormMode.View),\nSet(FormMode_KitchenForm, FormMode.New)\n);\n\nIf(ActiveRecord_Kitchen,\nSet(FormMode_KitchenFormView, FormMode.View),\nSet(FormMode_KitchenFormView, FormMode.New)\n);\n\n\n\n//Set Bathroom FormMode\nSet(\n    BathroomFormContentID,\n    LookUp(\n        ccBathroom,\n        content_id = gvContent_id,\n        ThisRecord\n    )\n);\n\nSet(\n    BathroomFormActive,\n    LookUp(\n        ccBathroom,\n        Active,\n        ThisRecord\n    )\n);\n\nIf(BathroomFormContentID.content_id=gvContent_id&&BathroomFormActive.Active,\n    Set(\n        ActiveRecord_Bathroom,\n        true\n    ),\n    Set(\n        ActiveRecord_Bathroom,\n        false\n    )\n);\n\n\n//Set Bathroom FormMode\nSet(FormMode_BathroomFormView,FormMode);\n\nIf(ActiveRecord_Bathroom,\nSet(FormMode_Bathroom, FormMode.Edit),\nSet(FormMode_Bathroom, FormMode.New)\n);\n\n//Set BathroomForm View \n\nIf(ActiveRecord_Bathroom,\nSet(FormMode_BathroomFormView, FormMode.View),\nSet(FormMode_BathroomFormView, FormMode.New)\n);"},{name:"LandingPage_Reports_Inventory_ON_VIZ",ext:".fx",code:"UpdateContext({ LoadingSpinner: true });\nSet(gvCurrentRoomDesc, Blank());\n\nIf(BackFromInspReview,\n    UpdateContext({ LoadingSpinner: false})\n);\n\nIf(ReturnFromExitPage,\n    UpdateContext({ LoadingSpinner: false})\n);\n\nIf(ReturnWO_Decription,\n    UpdateContext({ LoadingSpinner: false})\n);\n\nSet(gvSameFlooring, true );\nSet(gvSameFlooring, false );\nSet(WasSameFlrThroughout, true );\nSet(WasSameFlrThroughout, false );\n\nUpdateContext({SameFloorOverRide:false,PlayAudioNoteSameFloor:false,NoteSameFloor:false});\n\nDropdown_LandingPage_1.SelectedText.LivAreaTypeID = VarLivingAreaSelection;\n\n//Set Completed checkmark labels default status \nSet(RoomCondCompletedLabel, false );\nSet(FixtureCondCompletedLabel, false );\nSet(FurnCompletedLabel, false );\nSet(FlrCompletedLabel, false );\nSet(KitchenCompletedLabel, false );\n\nSet(gvStartTimer, false );\n\n//Pre-filter all Forms\n\n// *** Floor Form *** //\nUpdateContext({PlayAudioNoteSameFloor: false });\n\nSet(SFT_ActiveThisInsp, LookUp(\n    ShowColumns(ccFloor,\"FlrThroughoutFlag\",\"LivAreaTypeID\",\"Active\",\"content_id\",\"StarRezLivAreaID\"),\n    FlrThroughoutFlag\n    &&Active&&StarRezLivAreaID=gvStarRezLivAreaID&&content_id=gvContent_id&&LivAreaTypeID=gvCurrentRoomID)\n);\n\nSet(SFT_SetFalseByRoom,\nLookUp(ccFloor,\ncontent_id = gvContent_id\n&&LivAreaTypeID=gvCurrentRoomID\n&&FlrThroughoutFlag=false  \n&& Active)\n);\n\nSet(SFT_ActiveFlagAnyRoom,\nLookUp(ccFloor,\ncontent_id = gvContent_id\n&&FlrThroughoutFlag\n&& Active)\n);\n\nSet(SFT_ActiveRoomID,\nValue(SFT_ActiveFlagAnyRoom.LivAreaTypeID));\n\nIf(SFT_ActiveThisInsp.Active,\n    If(SFT_ActiveThisInsp.FlrThroughoutFlag&&SFT_ActiveRoomID=gvCurrentRoomID,   \n        Set(gvSameFlooring, true )\n    )\n,\n    If(SFT_SetFalseByRoom.Active&&SFT_ActiveRoomID<>gvCurrentRoomID,\n        Set(WasSameFlrThroughout, true)        \n        )\n);\n\nIf(WasSameFlrThroughout,\n        Set(gvSameFlooring, false ),\n    If(SFT_ActiveRoomID=0,\n        Set(gvSameFlooring, false ),\n        Set(gvSameFlooring, true )\n    ) \n);\n\nIf(gvSameFlooring,\n        Set(LivAreaID,\n            LookUp(ccFloor,\n            content_id = gvContent_id\n            && Active)\n        );\n        If(LivAreaID.Active,\n        Set(ActiveRecord_Floor, true),\n        Set(ActiveRecord_Floor, false)\n        );\n,\n        Set(LivAreaID,\n            LookUp(ccFloor,\n            content_id = gvContent_id\n            && Active\n            && LivAreaTypeID=gvCurrentRoomID\n            )\n        );\n        If(LivAreaID.Active&&SFT_SetFalseByRoom.Active,\n            Set(ActiveRecord_Floor, true),\n            Set(ActiveRecord_Floor, false)\n        );\n);\n\nSet(FormMode_Floor, FormMode );\nSet(FormMode_Floor, FormMode.New );\n\nIf(ActiveRecord_Floor,\nSet(FormMode_Floor, FormMode.View ),\nSet(FormMode_Floor, FormMode.New ));\n\nIf(ActiveRecord_Floor,\nSet(FormMode_FloorViewMode, FormMode.View ),\nSet(FormMode_FloorViewMode, FormMode.New )\n);\n\n// *** Furniture Form *** //\nSet(FurnitureFormContentID, LookUp(ccFurniture, content_id = gvContent_id, ThisRecord));\nSet(FurnitureFormActive, LookUp(ccFurniture, Active, ThisRecord));\nSet(FurnLivAreaID, LookUp(ccFurniture, LivAreaTypeID=VarLivingAreaSelection, ThisRecord));\n\nIf(\nFurnitureFormContentID.content_id=gvContent_id&&FurnitureFormActive.Active&&FurnLivAreaID.LivAreaTypeID=gvCurrentRoomID,\n    Set(ActiveRecord_Furniture, true),\n    Set(ActiveRecord_Furniture, false)\n);\n\nSet(FormMode_Furniture, FormMode );\nSet(FormMode_FurnitureViewMode, FormMode );\n\nIf(ActiveRecord_Furniture,\nSet(FormMode_Furniture, FormMode.View),\nSet(FormMode_Furniture,FormMode.New));\n\nIf(ActiveRecord_Furniture,\nSet(FormMode_FurnitureViewMode, FormMode.View),\nSet(FormMode_FurnitureViewMode,FormMode.New));\n\n// *** Kitchen Form *** //\nSet(KitchenFormContentID, LookUp(ccKitchen, content_id=gvContent_id&&Active, ThisRecord));\n\nIf(KitchenFormContentID.Active,\n    Set(ActiveRecord_Kitchen, true),\n    Set(ActiveRecord_Kitchen, false)\n);\n\nIf(ActiveRecord_Kitchen,\nSet(FormMode_KitchenForm, FormMode.View),\nSet(FormMode_KitchenForm, FormMode.New));\n\nIf(ActiveRecord_Kitchen,\nSet(FormMode_KitchenFormView, FormMode.View),\nSet(FormMode_KitchenFormView, FormMode.New));\n\n//Set Bathroom FormMode\nSet(BathroomFormContentID, LookUp(ccBathroom, content_id = gvContent_id, ThisRecord));\nSet(BathroomFormActive, LookUp(ccBathroom, Active, ThisRecord));\n\nIf(BathroomFormContentID.content_id=gvContent_id&&BathroomFormActive.Active,\n    Set(ActiveRecord_Bathroom, true),\n    Set(ActiveRecord_Bathroom, false)\n);\n\nSet(FormMode_BathroomFormView,FormMode);\n\nIf(ActiveRecord_Bathroom,\nSet(FormMode_Bathroom, FormMode.Edit),\nSet(FormMode_Bathroom, FormMode.New));\n\nIf(ActiveRecord_Bathroom,\nSet(FormMode_BathroomFormView, FormMode.View),\nSet(FormMode_BathroomFormView, FormMode.New));\n\nSet(StartTimer_BathroomRecord, false);\n\nUpdateContext({ LoadingSpinner: false});"},{name:"FixtureType_truth_table",ext:".txt",code:"FixtureTypeID\tFixtureTypeDesc\tInLivingRoom\tInKitchen\tInBathroom\tInBedroom_1\tInBedroom_2\tInBedroom_3\n1\tWalls\t1\t1\t1\t1\t1\t1\n2\tFloors\t1\t1\t1\t1\t1\t1\n3\tDoors\t1\t1\t1\t1\t1\t1\n4\tLights\t1\t1\t1\t1\t1\t1\n5\tWindows\t1\t1\t1\t0\t0\t0\n6\tStove\t0\t1\t0\t0\t0\t0\n7\tKitchen Sink\t0\t1\t0\t0\t0\t0\n8\tBathroom Sink\t0\t0\t1\t0\t0\t0\n9\tAC Unit\t1\t0\t0\t0\t0\t0\n10\tHeater\t1\t0\t0\t0\t0\t0\n11\tShower\t0\t0\t1\t0\t0\t0\n12\tBath Tub\t0\t0\t1\t0\t0\t0\n13\tToilet\t0\t0\t1\t0\t0\t0\n14\tMirror\t0\t0\t1\t1\t1\t1\n15\tSliding Door\t0\t1\t0\t0\t0\t0\n16\tBlinds\t1\t1\t1\t1\t1\t1\n18\tCabinets\t0\t1\t0\t0\t0\t0\n19\tFire Alarm\t1\t1\t1\t0\t0\t0\n20\tFire Extinguisher\t0\t1\t0\t0\t0\t0\n21\tCountertop\t0\t1\t0\t0\t0\t0\n22\tExhaust Fan Interior\t0\t1\t0\t0\t0\t0\n23\tExhaust Fan Exterior\t0\t1\t0\t0\t0\t0\n24\tRefrigerator\t0\t1\t0\t0\t0\t0\n25\tDinningSet\t0\t1\t0\t0\t0\t0\n26\tSmart Burner\t0\t1\t0\t0\t0\t0"}];
+
+let currentIndex = 0;
+
+function highlight(code) {
+  return code.split('\n').map((line, i) => {
+    const num = i + 1;
+    let html = escapeHtml(line);
+    if (/^\s*(\/\/\/|\/\/)/.test(line)) {
+      return codeLine(num, '<span class="syn-comment">' + html + '</span>');
+    }
+    if (html.includes('//')) {
+      const idx = html.indexOf('//');
+      const before = html.substring(0, idx);
+      const comment = html.substring(idx);
+      html = highlightExpr(before) + '<span class="syn-comment">' + comment + '</span>';
+      return codeLine(num, html);
+    }
+    html = highlightExpr(html);
+    return codeLine(num, html);
+  }).join('');
+}
+
+function highlightExpr(html) {
+  html = html.replace(/(&quot;|"|&#39;|')([^"']*?)(&quot;|"|&#39;|')/g,
+    '<span class="syn-string">$1$2$3</span>');
+  const keywords = ['Set','If','ClearCollect','Clear','Filter','LookUp','Navigate','UpdateContext',
+    'Concurrent','Defaults','ShowColumns','Table','LastN','CountRows','ForAll','Distinct',
+    'Reset','DateAdd','Weekday','Today','Day','Len','Left','Value','GUID','Ungroup',
+    'Blank','User','Now','ThisRecord'];
+  keywords.forEach(kw => {
+    html = html.replace(new RegExp('\\b(' + kw + ')\\b', 'g'),
+      '<span class="syn-function">$1</span>');
+  });
+  html = html.replace(/\b(true|false)\b/g, '<span class="syn-bool">$1</span>');
+  const enums = ['FormMode\\.View','FormMode\\.New','FormMode\\.Edit','FormMode',
+    'DisplayMode\\.Edit','DisplayMode','Disabled',
+    'ScreenTransition\\.None','TimeUnit\\.Days','TimeUnit\\.Months'];
+  enums.forEach(en => {
+    html = html.replace(new RegExp('\\b(' + en + ')\\b', 'g'),
+      '<span class="syn-keyword">$1</span>');
+  });
+  html = html.replace(/\b(\d+)\b/g, '<span class="syn-number">$1</span>');
+  html = html.replace(/(&&|&lt;=|&gt;=|&lt;&gt;|&lt;|&gt;|=)/g,
+    '<span class="syn-operator">$1</span>');
+  return html;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function codeLine(num, content) {
+  return '<div class="code-line"><span class="line-num">' + num + '</span><span class="line-text">' + (content || ' ') + '</span></div>';
+}
+
+function render() {
+  const file = files[currentIndex];
+  const lines = file.code.split('\n').length;
+  document.getElementById('tabBar').innerHTML = files.map((f, i) =>
+    '<div class="tab ' + (i === currentIndex ? 'active' : '') + '" onclick="goTo(' + i + ')">' + f.name + '<span class="ext">' + f.ext + '</span></div>'
+  ).join('');
+  document.getElementById('currentFileName').textContent = file.name + file.ext;
+  document.getElementById('lineCount').textContent = lines + ' lines';
+  document.getElementById('codeScroll').innerHTML =
+    '<div class="code-content active">' + highlight(file.code) + '</div>';
+  document.getElementById('codeScroll').scrollTop = 0;
+  document.getElementById('navDots').innerHTML = files.map((_, i) =>
+    '<div class="nav-dot ' + (i === currentIndex ? 'active' : '') + '" onclick="goTo(' + i + ')"></div>'
+  ).join('');
+  document.getElementById('navLabel').textContent = (currentIndex + 1) + ' / ' + files.length;
+  const activeTab = document.querySelector('.tab.active');
+  if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function goTo(i) { currentIndex = i; render(); }
+function navigate(dir) { currentIndex = (currentIndex + dir + files.length) % files.length; render(); }
+
+function copyCode() {
+  const code = files[currentIndex].code;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = 'Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') navigate(1);
+  if (e.key === 'ArrowLeft') navigate(-1);
+});
+
+render();
+</script>
+</body>
+</html>
