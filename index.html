@@ -869,7 +869,7 @@ section {
     <div class="hero-text">
       <h1>Mike Cvetanovich</h1>
       <div class="tagline">Adventures With Microsoft Power Platform</div>
-      <p class="hero-bio">Full-stack Power Platform developer building enterprise Canvas Apps, Power Automate governance flows, and Power BI dashboards across federal GCC and higher education environments.</p>
+      <p class="hero-bio">Full-stack Power Platform developer building enterprise Canvas Apps, Power Automate governance flows, and Power BI dashboards across federal GCC and higher education environments. Focused on solution architecture, data modeling, and application lifecycle management.</p>
     </div>
   </div>
 </section>
@@ -940,7 +940,7 @@ section {
         <div class="card-body">
           <div class="card-type">Power BI</div>
           <div class="card-title">Inspection Fixture Conditions Dashboard</div>
-          <div class="card-desc">Multi-page Power BI report suite featuring fixture condition analysis, room ratings, photo counts by reason type, support animal tracking, and furniture inventory.</div>
+          <div class="card-desc">7-page Power BI report suite connected to the FM Inspection SQL database, providing stakeholders with fixture condition analysis, room ratings, photo counts by reason type, support animal tracking, and furniture inventory across all residential buildings.</div>
           <div class="card-tags"><span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">SQL Views</span><span class="tag">Data Modeling</span></div>
         </div>
         <div class="project-detail">
@@ -961,7 +961,7 @@ section {
         <div class="card-body">
           <div class="card-type">Power BI</div>
           <div class="card-title">Work Order Dashboard</div>
-          <div class="card-desc">Dashboard tracking work orders by shop and job groups, with metric suggestions for facilities leadership.</div>
+          <div class="card-desc">Power BI dashboard giving facilities leadership visibility into work order volume by shop and job group, with KPI metric suggestions to support data-driven resource allocation and maintenance planning.</div>
           <div class="card-tags"><span class="tag">Power BI</span><span class="tag">Operations Analytics</span><span class="tag">KPI Design</span></div>
         </div>
       </div>
@@ -971,7 +971,7 @@ section {
         <div class="card-body">
           <div class="card-type">Power BI</div>
           <div class="card-title">Student Move-In Status Tracker</div>
-          <div class="card-desc">Real-time report tracking student check-in during move-in, with views by individual status, complex totals, and dorm totals.</div>
+          <div class="card-desc">Real-time Power BI report connected to StarRez housing data, giving Housing leadership live visibility into student check-in progress during move-in week — with drill-down by individual status, complex totals, and building totals.</div>
           <div class="card-tags"><span class="tag">Power BI</span><span class="tag">StarRez</span><span class="tag">Real-time Data</span></div>
         </div>
         <div class="project-detail">
@@ -1159,7 +1159,7 @@ ORDER BY 1 ASC, 2 ASC</div>
         <div class="card-body">
           <div class="card-type">Power Automate</div>
           <div class="card-title">Environment Governance — Sys Admin Discovery</div>
-          <div class="card-desc">Flow discovering all system administrators across all Power Platform environments for GCC governance.</div>
+          <div class="card-desc">Automated Power Automate flow that inventories all system administrators across every Power Platform environment in a GCC tenant — a critical governance requirement for security audits and CoE oversight.</div>
           <div class="card-tags"><span class="tag">Power Automate</span><span class="tag">GCC</span><span class="tag">Governance</span><span class="tag">CoE Toolkit</span></div>
         </div>
         <div class="project-detail">
@@ -1178,7 +1178,7 @@ ORDER BY 1 ASC, 2 ASC</div>
         <div class="card-body">
           <div class="card-type">Power Automate</div>
           <div class="card-title">SharePoint Site Discovery Flow</div>
-          <div class="card-desc">Automated flow to enumerate all SharePoint site URLs and names across the tenant.</div>
+          <div class="card-desc">Power Automate flow that programmatically discovers and catalogs all SharePoint site URLs and names across the tenant, supporting governance inventory and orphaned-site identification.</div>
           <div class="card-tags"><span class="tag">Power Automate</span><span class="tag">SharePoint</span><span class="tag">Inventory</span></div>
         </div>
       </div>
@@ -1188,8 +1188,12 @@ ORDER BY 1 ASC, 2 ASC</div>
         <div class="card-body">
           <div class="card-type">Azure + Power Platform</div>
           <div class="card-title">Azure Key Vault for Power Platform GCC</div>
-          <div class="card-desc">Implementation planning for Azure Key Vault integration with Power Platform service accounts in GCC.</div>
-          <div class="card-tags"><span class="tag">Azure Key Vault</span><span class="tag">GCC</span><span class="tag">Service Accounts</span><span class="tag">Security</span></div>
+          <div class="card-desc">Researched and documented a secure credential management strategy for Power Platform service accounts in GCC, replacing hardcoded credentials with Azure Key Vault integration to meet federal security compliance requirements.</div>
+          <div class="card-tags"><span class="tag">Azure Key Vault</span><span class="tag">GCC</span><span class="tag">Service Accounts</span><span class="tag">Security</span><span class="tag">Entra ID</span></div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section"><div class="detail-label">The Problem</div><div class="detail-text">Power Automate flows in GCC environments relied on service accounts with credentials stored in plain-text connection references. This created security risks, audit failures, and operational overhead when passwords expired or rotated.</div></div>
+          <div class="detail-section"><div class="detail-label">My Approach</div><div class="detail-text">Evaluated Azure Key Vault as a centralized secrets store for Power Platform connectors. Documented the end-to-end architecture: Entra ID app registration, Key Vault secret creation, custom connector configuration using OAuth 2.0, and environment variable binding for environment-specific secret URIs across dev/test/prod.</div></div>
         </div>
       </div>
 
@@ -1198,8 +1202,12 @@ ORDER BY 1 ASC, 2 ASC</div>
         <div class="card-body">
           <div class="card-type">Governance & Strategy</div>
           <div class="card-title">Premium License Optimization</div>
-          <div class="card-desc">Strategies for identifying unused and incorrectly assigned Microsoft premium licenses.</div>
-          <div class="card-tags"><span class="tag">License Management</span><span class="tag">Cost Optimization</span><span class="tag">Governance</span></div>
+          <div class="card-desc">Developed a systematic audit process to identify unused, incorrectly assigned, and over-provisioned Microsoft premium licenses — reducing waste and aligning license allocation with actual Power Platform usage patterns.</div>
+          <div class="card-tags"><span class="tag">License Management</span><span class="tag">Cost Optimization</span><span class="tag">Governance</span><span class="tag">Power Apps per User</span><span class="tag">Power Automate</span></div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section"><div class="detail-label">What I Did</div><div class="detail-text">Created a repeatable audit workflow comparing assigned licenses against actual app/flow usage via the CoE Toolkit and admin connectors. Identified license types (Power Apps per User, Power Automate per User, AI Builder) assigned to users who had no active apps or flows, and documented reassignment recommendations with cost impact analysis for leadership.</div></div>
+          <div class="detail-section"><div class="detail-label">Key Deliverables</div><div class="detail-text">License inventory report with usage heat map, reassignment priority list, and a presentation explaining App Pass vs. per-user licensing models to help non-technical stakeholders make informed purchasing decisions.</div></div>
         </div>
       </div>
 
@@ -1208,8 +1216,12 @@ ORDER BY 1 ASC, 2 ASC</div>
         <div class="card-body">
           <div class="card-type">Power BI Strategy</div>
           <div class="card-title">Power BI Content Lifecycle Management</div>
-          <div class="card-desc">Implementation planning for dev, test, and production deployment patterns in a federal environment.</div>
-          <div class="card-tags"><span class="tag">Power BI</span><span class="tag">ALM</span><span class="tag">Deployment Pipelines</span></div>
+          <div class="card-desc">Planned and documented a structured dev → test → production deployment pipeline for Power BI content in a federal GCC environment, establishing workspace governance, dataset certification, and promotion workflows.</div>
+          <div class="card-tags"><span class="tag">Power BI</span><span class="tag">ALM</span><span class="tag">Deployment Pipelines</span><span class="tag">Workspace Governance</span><span class="tag">GCC</span></div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section"><div class="detail-label">The Challenge</div><div class="detail-text">Reports were being developed and published directly to production workspaces with no review process, version control, or rollback capability. Dataset refresh failures impacted stakeholders without early warning.</div></div>
+          <div class="detail-section"><div class="detail-label">My Solution</div><div class="detail-text">Documented an implementation plan following Microsoft's content lifecycle management guidance: separate Dev/Test/Prod workspaces with deployment pipelines, dataset certification for trusted "single source of truth" models, sensitivity labels for data classification, and scheduled refresh monitoring with alerting.</div></div>
         </div>
       </div>
 
@@ -1218,8 +1230,12 @@ ORDER BY 1 ASC, 2 ASC</div>
         <div class="card-body">
           <div class="card-type">Documentation & Process</div>
           <div class="card-title">SOPs, Knowledge Base & Records Management</div>
-          <div class="card-desc">Shareable knowledge base, SOPs for service accounts, records management aligned with GRS.</div>
-          <div class="card-tags"><span class="tag">SOPs</span><span class="tag">Knowledge Base</span><span class="tag">Confluence</span><span class="tag">Records Mgmt</span></div>
+          <div class="card-desc">Built a Confluence-based knowledge base with SOPs for Power Platform administration, service account provisioning, and federal records management aligned with NARA's General Records Schedule.</div>
+          <div class="card-tags"><span class="tag">SOPs</span><span class="tag">Knowledge Base</span><span class="tag">Confluence</span><span class="tag">Records Mgmt</span><span class="tag">NARA/GRS</span></div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section"><div class="detail-label">What I Built</div><div class="detail-text">Created a centralized knowledge base in Confluence covering: service account request procedures, environment provisioning steps, connector governance policies, browser troubleshooting guides, and Power Apps coauthoring setup. Each SOP followed a consistent template with purpose, scope, prerequisites, step-by-step instructions, and review schedule.</div></div>
+          <div class="detail-section"><div class="detail-label">Records Management</div><div class="detail-text">Aligned digital records practices with NARA's General Records Schedule (GRS), establishing retention policies and disposition workflows to ensure federal compliance for Power Platform artifacts and documentation.</div></div>
         </div>
       </div>
 
@@ -1253,7 +1269,7 @@ ORDER BY 1 ASC, 2 ASC</div>
     <a href="Resume/Mike_Cvetanovich_Resume_3252026.pdf" class="footer-link" target="_blank" rel="noopener">📄 Resume</a>
     <a href="https://learn.microsoft.com/en-us/users/mike-cvetanovich/" class="footer-link" target="_blank" rel="noopener">🎓 Microsoft Learn</a>
   </div>
-  <div class="footer-copy">Mike Cvetanovich – Adventures with Microsoft Power Platform ©2025 – Power Apps & BI Consultant</div>
+  <div class="footer-copy">Mike Cvetanovich – Adventures with Microsoft Power Platform ©2025–2026 – Power Apps & BI Consultant</div>
 </footer>
 
 <!-- MODAL -->
