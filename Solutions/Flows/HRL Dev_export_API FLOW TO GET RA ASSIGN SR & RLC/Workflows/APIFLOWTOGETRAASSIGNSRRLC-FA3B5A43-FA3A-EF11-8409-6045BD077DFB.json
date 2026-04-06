@@ -1,0 +1,1004 @@
+{
+  "properties": {
+    "connectionReferences": {},
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "1e72869b-e2bc-40ad-a5c2-5ebde2f5773d"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "vCompID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "vCompID",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "HTTP": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "fbaf2c93-d293-4ed5-afb4-fe5a844d2987"
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "GET",
+            "uri": "https://virginia.starrezhousing.com/StarRezREST/services/query?q=SELECT%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20RoomBase.Description%20AS%20RMASSIGN%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20FROM%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20RoomBase%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20JOIN%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20RoomSpace%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20JOIN%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Booking%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20JOIN%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Entry%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20on%20Booking.EntryID%20=%20Entry.EntryID%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20WHERE%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20Booking.TermSessionID%20=%20126%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20AND%20Booking.EntryStatusEnum%20IN%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%202,%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%205%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20AND%20Entry.ID1%20=%20%22@{triggerBody()['text']}%22",
+            "headers": {
+              "context-type": "application/xml"
+            },
+            "authentication": {
+              "type": "Basic",
+              "username": "mdc8p",
+              "password": "787974b4-f2cd-4215-8bd7-a60c6330a0f3"
+            }
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d8e7af93-3d6e-4cb3-aac8-702ec4b58ece"
+          },
+          "type": "Compose",
+          "inputs": "@json(xml(body('HTTP')))"
+        },
+        "Parse_JSON": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "071883bc-35ed-4e47-905f-ab6ed1cbee70"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs('Compose')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "?xml": {
+                      "type": "object",
+                      "properties": {
+                        "@@version": {
+                          "type": "string"
+                        },
+                        "@@encoding": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "feed": {
+                      "type": "object",
+                      "properties": {
+                        "@@xmlns": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "object",
+                          "properties": {
+                            "@@type": {
+                              "type": "string"
+                            },
+                            "#text": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        },
+                        "link": {
+                          "type": "object",
+                          "properties": {
+                            "@@rel": {
+                              "type": "string"
+                            },
+                            "@@type": {
+                              "type": "string"
+                            },
+                            "@@href": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "entry": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "object",
+                              "properties": {
+                                "@@type": {
+                                  "type": "string"
+                                },
+                                "#text": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "updated": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "object",
+                              "properties": {
+                                "@@type": {
+                                  "type": "string"
+                                },
+                                "Record": {
+                                  "type": "object",
+                                  "properties": {
+                                    "RMASSIGN": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Initialize_Get_SR_CompID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "934db687-cc9f-45d1-8318-d8411d7d8495"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "resultaddress": "@variables('ResultAddress')",
+              "sraddress": "@variables('SRaddress')",
+              "sr_compid": "@variables('Get_SR_CompID')",
+              "rlc_compid": "@variables('RLC_ID')"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "resultaddress": {
+                  "title": "ResultAddress",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "sraddress": {
+                  "title": "SRaddress",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "sr_compid": {
+                  "title": "SR_CompID",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                },
+                "rlc_compid": {
+                  "title": "RLC_CompID",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Initialize_JsonObject": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "875db23b-8061-4fc6-a58c-19fce78c4fa5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "JsonObject",
+                "type": "object",
+                "value": "@body('Parse_JSON')"
+              }
+            ]
+          }
+        },
+        "Select": {
+          "runAfter": {
+            "Initialize_ObjRecord": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "baeca648-d1dc-4bd8-bc69-ba6db3c49abf"
+          },
+          "type": "Select",
+          "inputs": {
+            "from": [
+              "@variables('ObjRecord')"
+            ],
+            "select": {
+              "RMASSIGN": "@item()?['RMASSIGN']"
+            }
+          }
+        },
+        "Initialize_ResultAddress": {
+          "runAfter": {
+            "Select": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c6e23f3d-d62b-42f1-9f9b-3c692e39fecc"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ResultAddress",
+                "type": "string",
+                "value": "@{body('Select')?[0]?['RMASSIGN']}"
+              }
+            ]
+          }
+        },
+        "HTTP_2": {
+          "runAfter": {
+            "Initialize_ResultAddress": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6f7e0ed7-7328-4204-bb33-81e48ffd65de"
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "GET",
+            "uri": "https://virginia.starrezhousing.com/StarRezREST/services/query?q=SELECT%20RoomBase.CustomString2%20AS%20SR,%20RoomBase.CustomString3%20AS%20RLC%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20FROM%20RoomBase%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20WHERE%20RoomBase.Description%20=%20%22@{variables('ResultAddress')}%22",
+            "headers": {
+              "context-type": "application/xml"
+            },
+            "authentication": {
+              "type": "Basic",
+              "username": "mdc8p",
+              "password": "787974b4-f2cd-4215-8bd7-a60c6330a0f3"
+            }
+          }
+        },
+        "Compose_2": {
+          "runAfter": {
+            "HTTP_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ab460c0a-1735-4bbf-8286-40eb20322ee3"
+          },
+          "type": "Compose",
+          "inputs": "@json(xml(body('HTTP_2')))"
+        },
+        "Parse_JSON_2": {
+          "runAfter": {
+            "Compose_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5b7996fa-03d2-460f-b2b2-73e4f8904685"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs('Compose_2')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "?xml": {
+                      "type": "object",
+                      "properties": {
+                        "@@version": {
+                          "type": "string"
+                        },
+                        "@@encoding": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "feed": {
+                      "type": "object",
+                      "properties": {
+                        "@@xmlns": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "object",
+                          "properties": {
+                            "@@type": {
+                              "type": "string"
+                            },
+                            "#text": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        },
+                        "link": {
+                          "type": "object",
+                          "properties": {
+                            "@@rel": {
+                              "type": "string"
+                            },
+                            "@@type": {
+                              "type": "string"
+                            },
+                            "@@href": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "entry": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "object",
+                              "properties": {
+                                "@@type": {
+                                  "type": "string"
+                                },
+                                "#text": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "updated": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "object",
+                              "properties": {
+                                "@@type": {
+                                  "type": "string"
+                                },
+                                "Record": {
+                                  "type": "object",
+                                  "properties": {
+                                    "RMASSIGN": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Initialize_jsonObj": {
+          "runAfter": {
+            "Parse_JSON_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e5fb3a15-f1bf-43e3-8a52-12e6604f0af0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "jsonObj",
+                "type": "object",
+                "value": "@body('Parse_JSON_2')?['feed']"
+              }
+            ]
+          }
+        },
+        "Initialize_getEntryObj": {
+          "runAfter": {
+            "Initialize_jsonObj": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b6020fcf-8345-4d43-8512-534a54e88282"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "getEntryObj",
+                "type": "object",
+                "value": "@variables('jsonObj')?['entry']"
+              }
+            ]
+          }
+        },
+        "Initialize_getContentObj": {
+          "runAfter": {
+            "Initialize_getEntryObj": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a0072a93-390a-4b5d-bd16-1b90b31ddbe9"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "getContentObj",
+                "type": "object",
+                "value": "@variables('getEntryObj')?['content']"
+              }
+            ]
+          }
+        },
+        "Initialize_getRecordObj": {
+          "runAfter": {
+            "Initialize_getContentObj": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "173b8a67-3b38-4b43-91dd-bec474877e0b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "getRecordObj",
+                "type": "object",
+                "value": "@variables('getContentObj')?['Record']"
+              }
+            ]
+          }
+        },
+        "Select_SR_value": {
+          "runAfter": {
+            "Initialize_getRecordObj": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "75bd2f91-a7e3-4b83-8f16-b94329e21dab"
+          },
+          "type": "Select",
+          "inputs": {
+            "from": [
+              "@variables('getRecordObj')"
+            ],
+            "select": {
+              "SR": "@item()?['SR']"
+            }
+          }
+        },
+        "Initialize_SR_Result": {
+          "runAfter": {
+            "Select_SR_value": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "de1cc275-1d3b-4c02-a476-9e5b2d191ff9"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "SR_Result",
+                "type": "array",
+                "value": "@body('Select_SR_value')"
+              }
+            ]
+          }
+        },
+        "Initialize_SRaddress": {
+          "runAfter": {
+            "Initialize_SR_Result": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "27f29949-fe96-45fc-858d-a7f163c2fbc2"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "SRaddress",
+                "type": "string",
+                "value": "@{variables('SR_Result')[0]?['SR']}"
+              }
+            ]
+          }
+        },
+        "HTTP_3": {
+          "runAfter": {
+            "Initialize_RLC_ID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e922931a-9fac-4398-91fe-ccfa9297e60a"
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "GET",
+            "uri": "https://virginia.starrezhousing.com/StarRezREST/services/query?q=SELECT%20Entry.ID1%20AS%20SR_COMPID%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20FROM%20RoomBase%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20JOIN%20RoomSpace%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20JOIN%20Booking%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20JOIN%20Entry%20on%20Booking.EntryID%20=%20Entry.EntryID%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20WHERE%20Booking.TermSessionID%20=%20126%20AND%20Booking.EntryStatusEnum%20IN%20(2,5)%20AND%20RoomBase.Description%20=%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22@{variables('SRaddress')}%22",
+            "headers": {
+              "content-type": "application/xml"
+            },
+            "authentication": {
+              "type": "Basic",
+              "username": "mdc8p",
+              "password": "787974b4-f2cd-4215-8bd7-a60c6330a0f3"
+            }
+          }
+        },
+        "Compose_3": {
+          "runAfter": {
+            "HTTP_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "78cb0327-26b9-46aa-8d52-48832876d733"
+          },
+          "type": "Compose",
+          "inputs": "@json(xml(body('HTTP_3')))"
+        },
+        "Parse_JSON_3": {
+          "runAfter": {
+            "Compose_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "555df81c-da65-4854-b586-d09679875af8"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs('Compose_3')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "?xml": {
+                      "type": "object",
+                      "properties": {
+                        "@@version": {
+                          "type": "string"
+                        },
+                        "@@encoding": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "feed": {
+                      "type": "object",
+                      "properties": {
+                        "@@xmlns": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "object",
+                          "properties": {
+                            "@@type": {
+                              "type": "string"
+                            },
+                            "#text": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "updated": {
+                          "type": "string"
+                        },
+                        "link": {
+                          "type": "object",
+                          "properties": {
+                            "@@rel": {
+                              "type": "string"
+                            },
+                            "@@type": {
+                              "type": "string"
+                            },
+                            "@@href": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "entry": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "object",
+                              "properties": {
+                                "@@type": {
+                                  "type": "string"
+                                },
+                                "#text": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "updated": {
+                              "type": "string"
+                            },
+                            "content": {
+                              "type": "object",
+                              "properties": {
+                                "@@type": {
+                                  "type": "string"
+                                },
+                                "Record": {
+                                  "type": "object",
+                                  "properties": {
+                                    "RMASSIGN": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Initialize_JsonFeedObject": {
+          "runAfter": {
+            "Parse_JSON_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5a50a2f7-fd0c-4f01-9c39-bc6961ab965a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "JsonFeedObject",
+                "type": "object",
+                "value": "@body('Parse_JSON_3')?['feed']"
+              }
+            ]
+          }
+        },
+        "Initialize_ObjFeed": {
+          "runAfter": {
+            "Initialize_JsonObject": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a3f15523-16e4-482c-ae4c-bc836f4155a3"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ObjFeed",
+                "type": "object",
+                "value": "@variables('JsonObject')?['feed']"
+              }
+            ]
+          }
+        },
+        "Initialize_ObjEntry": {
+          "runAfter": {
+            "Initialize_ObjFeed": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "624ef8d8-a12f-4195-9ff2-959ac3793c5f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ObjEntry",
+                "type": "object",
+                "value": "@variables('ObjFeed')?['entry']"
+              }
+            ]
+          }
+        },
+        "Initialize_ObjContent": {
+          "runAfter": {
+            "Initialize_ObjEntry": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "44ead2d5-1dfe-43a0-8e22-fc4106e37065"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ObjContent",
+                "type": "object",
+                "value": "@variables('ObjEntry')?['content']"
+              }
+            ]
+          }
+        },
+        "Initialize_ObjRecord": {
+          "runAfter": {
+            "Initialize_ObjContent": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8b41f2e2-69af-44a3-8b30-f857b3d2d9e3"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ObjRecord",
+                "type": "object",
+                "value": "@variables('ObjContent')?['Record']"
+              }
+            ]
+          }
+        },
+        "Initialize_jsonEntryOb": {
+          "runAfter": {
+            "Initialize_JsonFeedObject": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "169a4051-95f8-4a98-95b4-5cc80bc1978b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "jsonEntryOb",
+                "type": "object",
+                "value": "@variables('JsonFeedObject')?['entry']"
+              }
+            ]
+          }
+        },
+        "Initialize_jsonObjcontent": {
+          "runAfter": {
+            "Initialize_jsonEntryOb": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "53d36780-9efa-46e5-ab0c-e43fcb0f522d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "jsonObjcontent",
+                "type": "object",
+                "value": "@variables('jsonEntryOb')?['content']"
+              }
+            ]
+          }
+        },
+        "Initialize_JsonObjectRecord": {
+          "runAfter": {
+            "Initialize_jsonObjcontent": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "54739200-e647-4b28-a756-6701f3ab0a19"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "JsonObjectRecord",
+                "type": "object",
+                "value": "@variables('jsonObjcontent')?['Record']"
+              }
+            ]
+          }
+        },
+        "Initialize_SR_CompID_result": {
+          "runAfter": {
+            "Select_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a549741a-e659-4462-9ac9-0d5ef25a98cc"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "SR_CompID_result",
+                "type": "array",
+                "value": "@body('Select_3')"
+              }
+            ]
+          }
+        },
+        "Select_3": {
+          "runAfter": {
+            "Initialize_JsonObjectRecord": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5a0a3d46-a846-4389-bca5-6c40a2ed8dad"
+          },
+          "type": "Select",
+          "inputs": {
+            "from": [
+              "@variables('JsonObjectRecord')"
+            ],
+            "select": {
+              "SR_CompID": "@item()?['SR_CompID']"
+            }
+          }
+        },
+        "Initialize_Get_SR_CompID": {
+          "runAfter": {
+            "Initialize_SR_CompID_result": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b51d7679-06d5-4432-9427-47572f1eaa6d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Get_SR_CompID",
+                "type": "string",
+                "value": "@{variables('SR_CompID_result')[0]?['SR_CompID']}"
+              }
+            ]
+          }
+        },
+        "Initialize_RLC_ID": {
+          "runAfter": {
+            "Initialize_RLC_Result": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "131960e6-3dbb-4bba-b90f-3ce2e1226731"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "RLC_ID",
+                "type": "string",
+                "value": "@{body('Select_RLC_value')[0]?['RLC']}"
+              }
+            ]
+          }
+        },
+        "Select_RLC_value": {
+          "runAfter": {
+            "Initialize_SRaddress": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5d105426-eb7d-45da-a61d-5cbdcf4c340c"
+          },
+          "type": "Select",
+          "inputs": {
+            "from": [
+              "@variables('getRecordObj')"
+            ],
+            "select": {
+              "RLC": "@item()?['RLC']"
+            }
+          }
+        },
+        "Initialize_RLC_Result": {
+          "runAfter": {
+            "Select_RLC_value": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6a446529-5ac1-49ab-9e25-fb7d1d86ab72"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "RLC_Result",
+                "type": "array",
+                "value": "@body('Select_RLC_value')"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "templateName": ""
+  },
+  "schemaVersion": "1.0.0.0"
+}

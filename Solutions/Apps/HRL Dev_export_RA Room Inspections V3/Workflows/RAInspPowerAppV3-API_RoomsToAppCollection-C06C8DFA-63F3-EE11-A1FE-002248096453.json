@@ -1,0 +1,333 @@
+{
+  "properties": {
+    "connectionReferences": {},
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "1e72869b-e2bc-40ad-a5c2-5ebde2f5773d"
+          },
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "required": []
+            }
+          }
+        }
+      },
+      "actions": {
+        "HTTP": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "fbaf2c93-d293-4ed5-afb4-fe5a844d2987"
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "GET",
+            "uri": "https://virginia.starrezhousing.com/starrezrest/services/query?q=SELECT%20DISTINCT%20RoomSpace.RoomSpaceID%20AS%20Bed_ID,%20RoomSpace.Description%20AS%20Bed_Name,%20RoomBase.RoomBaseID%20AS%20Room_ID,%20RoomBase.Description%20AS%20Room_Name,%20%20%20RoomBase.RoomLocationFloorSuiteID%20AS%20Suite_ID,%20%20RoomLocationFloorSuite.Description%20AS%20Suite_Name,%20RoomLocationFloorSuite.IsSuite,%20RoomLocationSection.RoomLocationSectionID%20AS%20Floor_ID,%20RoomLocationSection.Description%20AS%20Floor_Name,%20RoomBase.RoomLocationID%20AS%20Building_ID,%20RoomLocation.Description%20AS%20Building_Name,%20RoomLocation.RoomLocationAreaID%20AS%20Area_ID,%20RoomLocationArea.Description%20AS%20Area_Name,%20LEFT(Entry.NamePreferred,1)%20+%20LEFT(Entry.NameLast,1)%20as%20Res_Initials%0A%0AFROM%20RoomSpace%0A%0AINNER%20JOIN%20RoomBase%20ON%20RoomSpace.RoomBaseID%20=%20RoomBase.RoomBaseID%0A%0AINNER%20JOIN%20RoomLocationFloorSuite%20ON%20RoomBase.RoomLocationFloorSuiteID%20=%20RoomLocationFloorSuite.RoomLocationFloorSuiteID%0A%0AINNER%20JOIN%20RoomLocationSection%20ON%20RoomLocationFloorSuite.RoomLocationSectionID%20=%20RoomLocationSection.RoomLocationSectionID%0A%0AINNER%20JOIN%20RoomLocation%20ON%20RoomBase.RoomLocationID%20=%20RoomLocation.RoomLocationID%0A%0AINNER%20JOIN%20RoomLocationArea%20ON%20RoomLocation.RoomLocationAreaID%20=%20RoomLocationArea.RoomLocationAreaID%0A%0ALEFT%20OUTER%20JOIN%20Booking%20ON%20(RoomSpace.RoomSpaceID%20%20=%20Booking.RoomSpaceID%20AND%20Booking.EntryStatusEnum%20%20=%205)%0A%0ALEFT%20OUTER%20JOIN%20Entry%20ON%20Booking.EntryID%20=%20Entry.EntryID%0A%0AWHERE%20%20RoomSpace.RoomSpaceTypeEnum%20%20=%200%0A%0A%20AND%20%20RoomLocation.RoomLocationAreaID%20IN%20(1,%202,%2024,%204,%205,%208,%209,%2010,%2011,%2012,%2013,%2014,%2015,%2016)%0A%0AORDER%20BY%20RoomLocationArea.Description,%20RoomBase.Description%0A",
+            "headers": {
+              "context-type": "application/xml"
+            },
+            "authentication": {
+              "type": "Basic",
+              "username": "mdc8p",
+              "password": "b26a9c01-10f5-4d2a-ba01-dcffc8f45962"
+            }
+          }
+        },
+        "Compose_-_json(xml(body('HTTP')))__converts_incoming_xml_to_json": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d8e7af93-3d6e-4cb3-aac8-702ec4b58ece"
+          },
+          "type": "Compose",
+          "inputs": "@json(xml(body('HTTP')))"
+        },
+        "ParseJSON": {
+          "runAfter": {
+            "Compose_-_json(xml(body('HTTP')))__converts_incoming_xml_to_json": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "071883bc-35ed-4e47-905f-ab6ed1cbee70"
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs('Compose_-_json(xml(body(''HTTP'')))__converts_incoming_xml_to_json')",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Record": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "properties": {
+                      "type": "object",
+                      "properties": {
+                        "Bed_ID": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Bed_Name": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Room_ID": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Room_Name": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "IsSuite": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Floor_ID": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Floor_Name": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Building_ID": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Building_Name": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Area_ID": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Area_Name": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "NamePreferred": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "Res_Initials": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Initialize_ObjBody": {
+          "runAfter": {
+            "ParseJSON": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "566fa2f6-32b0-49fb-a304-2f4b05e6169a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ObjBody",
+                "type": "object",
+                "value": "@body('ParseJSON')?['feed']"
+              }
+            ]
+          }
+        },
+        "Initialize_ArrayEntry": {
+          "runAfter": {
+            "Initialize_ObjBody": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bc10f0b4-2610-4ae2-b6cd-97930540103e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ArrayEntry",
+                "type": "array",
+                "value": "@variables('ObjBody')?['entry']"
+              }
+            ]
+          }
+        },
+        "Initialize_ContentArray": {
+          "runAfter": {
+            "Initialize_ArrayEntry": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bb78490d-5b40-4b14-91c5-d030c908ba21"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ContentArray",
+                "type": "array",
+                "value": "@variables('ArrayEntry')"
+              }
+            ]
+          }
+        },
+        "Compose_ContentArray": {
+          "runAfter": {
+            "Initialize_ContentArray": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "85eefa05-cd31-4e71-af78-b187a0986d20"
+          },
+          "type": "Compose",
+          "inputs": "@variables('ContentArray')"
+        },
+        "SelectRecord": {
+          "runAfter": {
+            "Compose_ContentArray": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "19cb1d4f-709f-4788-b65c-67c6695981e4"
+          },
+          "type": "Select",
+          "inputs": {
+            "from": "@outputs('Compose_ContentArray')",
+            "select": {
+              "Area_Name": "@item()?['content']?['Record']?['Area_Name']",
+              "Area_ID": "@item()?['content']?['Record']?['Area_ID']",
+              "Building_Name": "@item()?['content']?['Record']?['Building_Name']",
+              "Building_ID": "@item()?['content']?['Record']?['Building_ID']",
+              "Floor_Name": "@item()?['content']?['Record']?['Floor_Name']",
+              "Floor_ID": "@item()?['content']?['Record']?['Floor_ID']",
+              "Room_Name": "@item()?['content']?['Record']?['Room_Name']",
+              "Room_ID": "@item()?['content']?['Record']?['Room_ID']",
+              "Bed_Name": "@item()?['content']?['Record']?['Bed_Name']",
+              "Bed_ID": "@item()?['content']?['Record']?['Bed_ID']",
+              "NamePreferred": "@item()?['content']?['Record']?['NamePreferred']",
+              "Res_Initials": "@item()?['content']?['Record']?['Res_Initials']",
+              "IsSuite": "@item()?['content']?['Record']?['IsSuite']",
+              "Suite_Name": "@item()?['content']?['Record']?['Suite_Name']",
+              "Suite_ID": "@item()?['content']?['Record']?['Suite_ID']"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "SelectRecord": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d68b03ec-ddb0-4ba8-821f-dcf87f2c88f3"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "response": "@{outputs('SelectRecord')}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "response": {
+                  "title": "response",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "templateName": null
+  },
+  "schemaVersion": "1.0.0.0"
+}

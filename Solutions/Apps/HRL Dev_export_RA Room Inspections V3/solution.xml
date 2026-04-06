@@ -1,0 +1,28 @@
+<ImportExportXml version="9.2.26031.182" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.26031.182" OrganizationSchemaType="Core" CRMServerServiceabilityVersion="9.2.26031.00182">
+  <SolutionManifest>
+    <UniqueName>ExportComponents53d87527a6514140920bcbf9b5d673aa</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="ExportComponents53d87527a6514140920bcbf9b5d673aa" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0</Version>
+    <Managed>0</Managed>
+    <Publisher>
+      <UniqueName>Cr8456b</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="CDS Default Publisher" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>crc44</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>18066</CustomizationOptionValuePrefix>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="29" id="{9962717e-0974-ee11-9ae7-0022480a49d5}" behavior="0" />
+      <RootComponent type="29" id="{c06c8dfa-63f3-ee11-a1fe-002248096453}" behavior="0" />
+      <RootComponent type="300" schemaName="cr85e_raroominspectionsdev_fd689" behavior="0" />
+    </RootComponents>
+    <MissingDependencies />
+  </SolutionManifest>
+</ImportExportXml>

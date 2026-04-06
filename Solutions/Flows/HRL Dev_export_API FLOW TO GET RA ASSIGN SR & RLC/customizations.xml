@@ -1,0 +1,47 @@
+<ImportExportXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.26031.182" OrganizationSchemaType="Core" CRMServerServiceabilityVersion="9.2.26031.00182">
+  <Entities></Entities>
+  <Roles></Roles>
+  <Workflows>
+    <Workflow WorkflowId="{fa3b5a43-fa3a-ef11-8409-6045bd077dfb}" Name="API FLOW TO GET RA ASSIGN SR &amp; RLC" Description="1. Uses RA computer ID to return RMASSIGN&#xA;2. Uses AMASSIGN assignment to return SR Assignment and RLC Computer ID.&#xA;3. Uses SR Assignment to return SR computer ID.">
+      <JsonFileName>/Workflows/APIFLOWTOGETRAASSIGNSRRLC-FA3B5A43-FA3A-EF11-8409-6045BD077DFB.json</JsonFileName>
+      <Type>1</Type>
+      <Subprocess>0</Subprocess>
+      <Category>5</Category>
+      <Mode>0</Mode>
+      <Scope>4</Scope>
+      <OnDemand>0</OnDemand>
+      <TriggerOnCreate>0</TriggerOnCreate>
+      <TriggerOnDelete>0</TriggerOnDelete>
+      <AsyncAutodelete>0</AsyncAutodelete>
+      <SyncWorkflowLogOnFailure>0</SyncWorkflowLogOnFailure>
+      <StateCode>0</StateCode>
+      <StatusCode>1</StatusCode>
+      <RunAs>1</RunAs>
+      <IsTransacted>1</IsTransacted>
+      <IntroducedVersion>1.0.0.1</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <BusinessProcessType>0</BusinessProcessType>
+      <PrimaryEntity>none</PrimaryEntity>
+      <LocalizedNames>
+        <LocalizedName languagecode="1033" description="API FLOW TO GET RA ASSIGN SR &amp; RLC" />
+      </LocalizedNames>
+      <Descriptions>
+        <Description languagecode="1033" description="1. Uses RA computer ID to return RMASSIGN&#xA;2. Uses AMASSIGN assignment to return SR Assignment and RLC Computer ID.&#xA;3. Uses SR Assignment to return SR computer ID." />
+      </Descriptions>
+    </Workflow>
+  </Workflows>
+  <FieldSecurityProfiles></FieldSecurityProfiles>
+  <Templates />
+  <EntityMaps />
+  <EntityRelationships />
+  <OrganizationSettings />
+  <optionsets />
+  <CustomControls />
+  <EntityDataProviders />
+  <Languages>
+    <Language>1033</Language>
+    <Language>3082</Language>
+    <Language>1036</Language>
+    <Language>1031</Language>
+  </Languages>
+</ImportExportXml>

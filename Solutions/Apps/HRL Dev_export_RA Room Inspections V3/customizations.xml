@@ -1,0 +1,111 @@
+<ImportExportXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" OrganizationVersion="9.2.26031.182" OrganizationSchemaType="Core" CRMServerServiceabilityVersion="9.2.26031.00182">
+  <Entities></Entities>
+  <Roles></Roles>
+  <Workflows>
+    <Workflow WorkflowId="{c06c8dfa-63f3-ee11-a1fe-002248096453}" Name="RAInspPowerAppV3 -&gt; API_RoomsToAppCollection" Description="Query StarRez, Returns all room locations to the bed level and include student initials.">
+      <JsonFileName>/Workflows/RAInspPowerAppV3-API_RoomsToAppCollection-C06C8DFA-63F3-EE11-A1FE-002248096453.json</JsonFileName>
+      <Type>1</Type>
+      <Subprocess>0</Subprocess>
+      <Category>5</Category>
+      <Mode>0</Mode>
+      <Scope>4</Scope>
+      <OnDemand>0</OnDemand>
+      <TriggerOnCreate>0</TriggerOnCreate>
+      <TriggerOnDelete>0</TriggerOnDelete>
+      <AsyncAutodelete>0</AsyncAutodelete>
+      <SyncWorkflowLogOnFailure>0</SyncWorkflowLogOnFailure>
+      <StateCode>0</StateCode>
+      <StatusCode>1</StatusCode>
+      <RunAs>1</RunAs>
+      <IsTransacted>1</IsTransacted>
+      <IntroducedVersion>1.0</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <BusinessProcessType>0</BusinessProcessType>
+      <PrimaryEntity>none</PrimaryEntity>
+      <LocalizedNames>
+        <LocalizedName languagecode="1033" description="RAInspPowerAppV3 -&gt; API_RoomsToAppCollection" />
+      </LocalizedNames>
+      <Descriptions>
+        <Description languagecode="1033" description="Query StarRez, Returns all room locations to the bed level and include student initials." />
+      </Descriptions>
+    </Workflow>
+    <Workflow WorkflowId="{9962717e-0974-ee11-9ae7-0022480a49d5}" Name="PowerAppV3 -&gt; API_StarRezRoom" Description="Query StarRez, Returns all room locations to the bed level and include student initials.">
+      <JsonFileName>/Workflows/PowerAppV3-API_StarRezRoom-9962717E-0974-EE11-9AE7-0022480A49D5.json</JsonFileName>
+      <Type>1</Type>
+      <Subprocess>0</Subprocess>
+      <Category>5</Category>
+      <Mode>0</Mode>
+      <Scope>4</Scope>
+      <OnDemand>0</OnDemand>
+      <TriggerOnCreate>0</TriggerOnCreate>
+      <TriggerOnDelete>0</TriggerOnDelete>
+      <AsyncAutodelete>0</AsyncAutodelete>
+      <SyncWorkflowLogOnFailure>0</SyncWorkflowLogOnFailure>
+      <StateCode>0</StateCode>
+      <StatusCode>1</StatusCode>
+      <RunAs>1</RunAs>
+      <IsTransacted>1</IsTransacted>
+      <IntroducedVersion>1.0.0.1</IntroducedVersion>
+      <IsCustomizable>1</IsCustomizable>
+      <BusinessProcessType>0</BusinessProcessType>
+      <PrimaryEntity>none</PrimaryEntity>
+      <LocalizedNames>
+        <LocalizedName languagecode="1033" description="PowerAppV3 -&gt; API_StarRezRoom" />
+      </LocalizedNames>
+      <Descriptions>
+        <Description languagecode="1033" description="Query StarRez, Returns all room locations to the bed level and include student initials." />
+      </Descriptions>
+    </Workflow>
+  </Workflows>
+  <FieldSecurityProfiles></FieldSecurityProfiles>
+  <Templates />
+  <EntityMaps />
+  <EntityRelationships />
+  <OrganizationSettings />
+  <optionsets />
+  <CustomControls />
+  <EntityDataProviders />
+  <CanvasApps>
+    <CanvasApp>
+      <Name>cr85e_raroominspectionsdev_fd689</Name>
+      <AppVersion>2024-04-05T18:27:39Z</AppVersion>
+      <Status>Ready</Status>
+      <CreatedByClientVersion>3.24032.26.0</CreatedByClientVersion>
+      <MinClientVersion>3.24032.26.0</MinClientVersion>
+      <Tags>{"primaryDeviceWidth":"772","primaryDeviceHeight":"1370","supportsPortrait":"true","supportsLandscape":"false","primaryFormFactor":"Tablet","publisherVersion":"3.24032.26","minimumRequiredApiVersion":"2.2.0","hasComponent":"false","hasUnlockedComponent":"false","isUnifiedRootApp":"false","sienaVersion":"20240404T142353Z-3.24032.26.0","showStatusBar":"true","offlineLargeFilesSupport":"false"}</Tags>
+      <IsCdsUpgraded>0</IsCdsUpgraded>
+      <GalleryItemId xsi:nil="true"></GalleryItemId>
+      <BackgroundColor>rgba(241, 244, 249, 1)</BackgroundColor>
+      <DisplayName>RA Room Inspections V3</DisplayName>
+      <Description>RA Room Inspection App
+
+This app is designed to allow RA student staff to collect student room condition data during end of session checkouts.</Description>
+      <CommitMessage xsi:nil="true"></CommitMessage>
+      <Publisher></Publisher>
+      <AuthorizationReferences>[]</AuthorizationReferences>
+      <ConnectionReferences>{"093ac3f6-03ee-4766-8f9e-3839812c3a4f":{"id":"/providers/microsoft.powerapps/apis/shared_sharepointonline","displayName":"SharePoint","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1682/1.0.1682.3676/sharepointonline/icon.png","dataSources":["RA Inspections Results Satisfactory"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{"https://myuva.sharepoint.com/sites/HRLRARoomInspections":{"dataSources":{"RA Inspections Results Satisfactory":{"tableName":"7a7ff66e-9a59-4608-bfe5-a328a81bc0d0"}}}},"apiTier":"Standard","actions":["providers/PowerPlatform.Governance/Operations/Read","providers/PowerPlatform.Governance/Operations/Write"]},"6b3cd391-8f22-4df2-8694-d1055c6643f7":{"id":"/providers/microsoft.powerapps/apis/shared_sharepointonline","displayName":"SharePoint","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1682/1.0.1682.3676/sharepointonline/icon.png","dataSources":["RA Inspections Results"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{"https://myuva.sharepoint.com/sites/HRLRARoomInspections":{"dataSources":{"RA Inspections Results":{"tableName":"91a6e8f1-d908-44c8-867a-cc77ebc4413a"}}}},"apiTier":"Standard","actions":["providers/PowerPlatform.Governance/Operations/Read","providers/PowerPlatform.Governance/Operations/Write"]},"41406f8e-fab1-440b-b053-72bbef61828c":{"id":"/providers/microsoft.powerapps/apis/shared_logicflows","displayName":"Logic flows","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1680/1.0.1680.3652/logicflows/icon.png","dataSources":["PowerAppV3-&gt;API_StarRezRoom"],"dependencies":[],"dependents":[],"parameterHints":{"workflowName":{"value":"0bd0a3c1-6bff-4a9b-a48e-36fd347162ba"},"workflowEntityId":{"value":"9962717e-0974-ee11-9ae7-0022480a49d5"},"workflowDisplayName":{"value":"PowerAppV3 -&gt; API_StarRezRoom"}},"parameterHintsV2":{"workflowName":{"value":"0bd0a3c1-6bff-4a9b-a48e-36fd347162ba"},"workflowEntityId":{"value":"9962717e-0974-ee11-9ae7-0022480a49d5"},"workflowDisplayName":{"value":"PowerAppV3 -&gt; API_StarRezRoom"}},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard"},"2263e75f-0c3a-4186-a24e-aa5785a882ca":{"id":"/providers/microsoft.powerapps/apis/shared_logicflows","displayName":"Logic flows","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1680/1.0.1680.3652/logicflows/icon.png","dataSources":["RAInspPowerAppV3-&gt;API_RoomsToAppCollection"],"dependencies":[],"dependents":[],"parameterHints":{"workflowName":{"value":"b95246c6-dca7-4d80-84d4-a26c0a9b15a8"},"workflowEntityId":{"value":"c06c8dfa-63f3-ee11-a1fe-002248096453"},"workflowDisplayName":{"value":"RAInspPowerAppV3 -&gt; API_RoomsToAppCollection"}},"parameterHintsV2":{"workflowName":{"value":"b95246c6-dca7-4d80-84d4-a26c0a9b15a8"},"workflowEntityId":{"value":"c06c8dfa-63f3-ee11-a1fe-002248096453"},"workflowDisplayName":{"value":"RAInspPowerAppV3 -&gt; API_RoomsToAppCollection"}},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["Run"]}}</ConnectionReferences>
+      <DatabaseReferences>{}</DatabaseReferences>
+      <AppComponents>[]</AppComponents>
+      <AppComponentDependencies>[]</AppComponentDependencies>
+      <CanConsumeAppPass>1</CanConsumeAppPass>
+      <CanvasAppType>0</CanvasAppType>
+      <BypassConsent>0</BypassConsent>
+      <AdminControlBypassConsent>0</AdminControlBypassConsent>
+      <EmbeddedApp xsi:nil="true"></EmbeddedApp>
+      <IntroducedVersion>1.0</IntroducedVersion>
+      <CdsDependencies>{"cdsdependencies":[{"dependencyid":"9962717e-0974-ee11-9ae7-0022480a49d5","componenttype":29,"componenttypeplatformname":"Workflow"},{"dependencyid":"c06c8dfa-63f3-ee11-a1fe-002248096453","componenttype":29,"componenttypeplatformname":"Workflow"}]}</CdsDependencies>
+      <IsCustomizable>1</IsCustomizable>
+      <BackgroundImageUri>/CanvasApps/cr85e_raroominspectionsdev_fd689_BackgroundImageUri</BackgroundImageUri>
+      <DocumentUri>/CanvasApps/cr85e_raroominspectionsdev_fd689_DocumentUri.msapp</DocumentUri>
+      <AdditionalUris>
+        <AdditionalUri>/CanvasApps/cr85e_raroominspectionsdev_fd689_AdditionalUris0_identity.json</AdditionalUri>
+      </AdditionalUris>
+    </CanvasApp>
+  </CanvasApps>
+  <Languages>
+    <Language>1033</Language>
+    <Language>3082</Language>
+    <Language>1036</Language>
+    <Language>1031</Language>
+  </Languages>
+</ImportExportXml>
