@@ -180,7 +180,7 @@ section {
 
 .project-card {
   background: var(--card-bg);
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--copper);
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
@@ -189,7 +189,7 @@ section {
 }
 
 .project-card:hover {
-  border-color: var(--copper);
+  border-color: #d3d3d3;
   background: var(--card-hover);
   transform: translateY(-3px);
   box-shadow: 0 12px 40px rgba(139,94,60,0.12);
@@ -890,7 +890,7 @@ section {
     </div>
     <div class="projects-grid">
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Facilities Management Inspection App">
         <div class="card-image">
           <img src="University of Virginia/HRL Facilities Management/FM INSP APP/APP Screenshots/01-HRL_InspectionApp_TabletMode.jpg" alt="FM Inspection App" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🏗</div>'">
         </div>
@@ -938,7 +938,7 @@ section {
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Inspection Fixture Conditions Dashboard">
         <div class="card-image"><img src="University of Virginia/HRL Facilities Management/FM Reports/FM INSP Report/P1 INSP FIXTURE DASHBOARD.png" alt="Inspection Dashboard" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📊</div>'"></div>
         <div class="card-body">
           <div class="card-type">Power BI</div>
@@ -959,7 +959,7 @@ section {
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Work Order Dashboard">
         <div class="card-image"><img src="University of Virginia/HRL Facilities Management/FM Reports/FM Work Order DashBoard/Work Orders by Shop & Job Groups.png" alt="Work Orders" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🔧</div>'"></div>
         <div class="card-body">
           <div class="card-type">Power BI</div>
@@ -969,7 +969,7 @@ section {
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Student Move-In Status Tracker">
         <div class="card-image"><img src="University of Virginia/HRL Assignments/P1 Student Move-In Status - Not Checked In.png" alt="Move-In" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🎓</div>'"></div>
         <div class="card-body">
           <div class="card-type">Power BI</div>
@@ -988,7 +988,7 @@ section {
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="RA Program Event Tracker">
         <div class="card-image"><img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/TOP Test Program Event APP .png" alt="RA Events" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📋</div>'"></div>
         <div class="card-body">
           <div class="card-type">Canvas App + Power Automate + Power BI</div>
@@ -997,7 +997,7 @@ section {
           <div class="card-tags"><span class="tag">Canvas Apps</span><span class="tag">Power Automate</span><span class="tag">Power BI</span><span class="tag">Graph API</span><span class="tag">Planner</span><span class="tag">SharePoint</span></div>
         </div>
         <div class="project-detail">
-          <div class="detail-section"><div class="detail-label">Workflow</div><div class="detail-text">1. RA opens the Request Form tab in Teams and enters their CompID — the app queries StarRez via API to auto-populate the approval chain (Senior Resident → Resident Life Coordinator). 2. RA fills out the event request (name, dates, building, learning goals, estimated cost) and submits. 3. The SR receives an approval request via Teams chat and email with a link to the full SharePoint record. 4. Upon SR approval, a second approval triggers automatically to the RLC for final sign-off. 5. Final approval creates a Planner task (with bucket, priority, and due date), adds it to the RA’s Outlook To-Do list, and enables email notifications for late/upcoming tasks. 6. Events are viewable in Schedule, Board, and List views within the Teams channel.</div></div>
+          <div class="detail-section"><div class="detail-label">Workflow</div><div class="detail-text">1. RA opens the Request Form tab in Teams and enters their CompID — the app queries StarRez via API to auto-populate the approval chain (Senior Resident → Resident Life Coordinator). 2. RA fills out the event request (name, dates, building, learning goals, estimated cost) and submits. 3. The SR receives an approval request via Teams chat and email with a link to the full SharePoint record. 4. Upon SR approval, a second approval triggers automatically to the RLC for final sign-off. 5. Final approval creates a Planner task (with bucket, priority, and due date), adds it to the RA's Outlook To-Do list, and enables email notifications for late/upcoming tasks. 6. Events are viewable in Schedule, Board, and List views within the Teams channel.</div></div>
           <div class="detail-section"><div class="detail-label">App Screenshots</div>
             <div class="detail-screenshots">
               <img src="University of Virginia/HRL Resident Life/RA Program Events/APP - RA Program Events App Screenshots/TOP Test Program Event APP .png" alt="Welcome Page" loading="lazy">
@@ -1024,7 +1024,7 @@ section {
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="RA Room Inspection App">
         <div class="card-image"><img src="University of Virginia/HRL Resident Life/RA Room Inspections/RA Room Inspection APP/RA Room Inspection App Screenshots/01_select_housing_area.png" alt="RA Room Inspection" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📱</div>'"></div>
         <div class="card-body">
           <div class="card-type">Canvas App + SharePoint + Power BI</div>
@@ -1066,7 +1066,7 @@ section {
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Building Access Control System">
         <div class="card-image"><img src="University of Virginia/HRL Conferences/Key Card Report.png" alt="Key Card Report" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🔐</div>'"></div>
         <div class="card-body">
           <div class="card-type">Oracle SQL + Batch Automation</div>
@@ -1106,7 +1106,7 @@ spool off;</div>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Mailroom Staff Arrival Tracker">
         <div class="card-image"><img src="University of Virginia/HRL Mailroom/Mailroom Staff Arrivals.png" alt="Mailroom Staff Arrivals" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📬</div>'"></div>
         <div class="card-body">
           <div class="card-type">Power BI + Oracle SQL + Power Query</div>
@@ -1157,7 +1157,7 @@ ORDER BY 1 ASC, 2 ASC</div>
     </div>
     <div class="projects-grid">
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Environment Governance — Sys Admin Discovery">
         <div class="card-image"><img src="ECS/PowerAutomateFlows/Screenshots of FLOW  Get All Sys Admin All Environments/20260112_104218.jpg" alt="Flow" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>⚡</div>'"></div>
         <div class="card-body">
           <div class="card-type">Power Automate</div>
@@ -1176,7 +1176,7 @@ ORDER BY 1 ASC, 2 ASC</div>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="SharePoint Site Discovery Flow">
         <div class="card-image"><img src="ECS/PowerAutomateFlows/Example Get All SharePoint URLs and Site Names.PNG" alt="SharePoint" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🌐</div>'"></div>
         <div class="card-body">
           <div class="card-type">Power Automate</div>
@@ -1186,7 +1186,7 @@ ORDER BY 1 ASC, 2 ASC</div>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Azure Key Vault for Power Platform GCC">
         <div class="card-image"><div class="card-image-placeholder">🔑</div></div>
         <div class="card-body">
           <div class="card-type">Azure + Power Platform</div>
@@ -1200,7 +1200,7 @@ ORDER BY 1 ASC, 2 ASC</div>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Premium License Optimization">
         <div class="card-image"><div class="card-image-placeholder">💰</div></div>
         <div class="card-body">
           <div class="card-type">Governance & Strategy</div>
@@ -1214,7 +1214,7 @@ ORDER BY 1 ASC, 2 ASC</div>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="Power BI Content Lifecycle Management">
         <div class="card-image"><div class="card-image-placeholder">📈</div></div>
         <div class="card-body">
           <div class="card-type">Power BI Strategy</div>
@@ -1228,7 +1228,7 @@ ORDER BY 1 ASC, 2 ASC</div>
         </div>
       </div>
 
-      <div class="project-card">
+      <div class="project-card" data-card-name="SOPs, Knowledge Base & Records Management">
         <div class="card-image"><div class="card-image-placeholder">📝</div></div>
         <div class="card-body">
           <div class="card-type">Documentation & Process</div>
@@ -1259,7 +1259,7 @@ ORDER BY 1 ASC, 2 ASC</div>
   <div class="section-label section-label-spaced">Professional Development</div>
   <div class="section-divider"></div>
   <div class="projects-grid profdev-grid">
-    <div class="project-card">
+    <div class="project-card" data-card-name="Microsoft Learn & Continuous Development">
       <div class="card-image"><div class="card-image-placeholder">🎓</div></div>
       <div class="card-body">
         <div class="card-type">Certifications & Learning</div>
@@ -1362,11 +1362,12 @@ function openModal(card) {
   const title = card.querySelector('.card-title').textContent;
   const desc = card.querySelector('.card-desc').textContent;
 
-  // GA4 — track which project card was opened
+  // GA4 — track which project card was opened with card name from data attribute
+  const cardName = card.dataset.cardName || title;
   const orgBlock = card.closest('.org-block');
   const org = orgBlock ? orgBlock.querySelector('.org-name').textContent : 'Unknown';
   gtag('event', 'project_card_open', {
-    project_name: title,
+    project_name: cardName,
     project_type: type,
     organization: org
   });
@@ -1626,7 +1627,7 @@ var modalOpenProject = null;
 var _origOpenModal = openModal;
 openModal = function(card) {
   modalOpenTime = Date.now();
-  modalOpenProject = card.querySelector('.card-title').textContent;
+  modalOpenProject = card.dataset.cardName || card.querySelector('.card-title').textContent;
   _origOpenModal(card);
 };
 
