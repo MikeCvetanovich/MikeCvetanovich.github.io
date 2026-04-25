@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(winget upgrade Microsoft.PowerShell --version 7.6.1 --accept-source-agreements --accept-package-agreements)"
+    ]
+  }
+}
