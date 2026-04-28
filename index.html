@@ -189,48 +189,6 @@
       </div>
       <!-- /CARD: RA Room Inspection App ================================ -->
 
-      <!-- CARD: Building Access Control System ========================= -->
-      <div class="project-card" data-card-name="Building Access Control System">
-        <div class="card-image"><img src="University of Virginia/HRL Conferences/Key Card Report.png" alt="Key Card Report" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🔐</div>'"></div>
-        <div class="card-body">
-          <div class="card-type">Oracle SQL + Batch Automation</div>
-          <div class="card-title">Building Access Control System</div>
-          <div class="card-desc">Automated offline door monitoring and reporting for residential buildings using Oracle SQL queries against Diebold's CS Gold access control system, with batch-scripted report generation via sqlcl.</div>
-          <div class="card-tags"><span class="tag">Oracle SQL</span><span class="tag">Batch Scripts</span><span class="tag">Diebold CS Gold</span><span class="tag">sqlcl</span><span class="tag">Automated Reports</span></div>
-        </div>
-        <div class="project-detail">
-          <div class="detail-section"><div class="detail-label">How It Worked</div><div class="detail-text">Windows Task Scheduler triggered batch files that launched Oracle sqlcl sessions, executed SQL queries against the Diebold CS Gold database, spooled results to CSV, and generated HTML reports — all without manual intervention. Reports tracked offline doors, voltage levels, parent device status, and alarm states across 30,000+ location IDs.</div></div>
-          <div class="detail-section"><div class="detail-label">Code Sample — Offline Door Report (Batch + Oracle SQL)</div>
-            <div class="code-snippet">-- offline_door_report.bat (Oracle sqlcl script)
-set encoding windows-1252
-set sqlformat csv
-spool on
-spool 'C:\sql_reports\offlinedoors.csv'
-SELECT TO_CHAR(t1.SESS_STATUS_DATE,
-  'MON-DD-YYYY HH24:MI:SS') AS "DATETIME",
-  t1.LOCATION, t1.LONGDES,
-  MY_BOOL_TO_STR(t1.ISOFFLINE) AS "ISOFFLINE",
-  PARENT_OFFLINE(t2.sess_status)
-    AS "IS PARENT OFFLINE?",
-  t3.CURRENTPOINTVALUE AS "VOLTAGE"
-FROM doorstates_vr t1
-INNER JOIN doors_vr t2
-  ON t1.location = t2.location
-INNER JOIN ALARMSTATES T3
-  ON t3.location = t1.location
-WHERE t1.ISOFFLINE = 1
-  AND t2.STATUS = 'ACT'
-ORDER BY 5 ASC, 3 DESC;
-spool off;</div>
-          </div>
-          <div class="detail-section"><div class="detail-label">Documentation</div>
-            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Access Control/alarms log table relationship.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Alarms Log Table Relationships</a></div>
-            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Access Control/HRL Access Control Request Process.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Access Control Request Process</a></div>
-          </div>
-        </div>
-      </div>
-      <!-- /CARD: Building Access Control System ======================== -->
-
       <!-- CARD: Inspection Fixture Conditions Dashboard ================ -->
       <div class="project-card" data-card-name="Inspection Fixture Conditions Dashboard">
         <div class="card-image"><img src="University of Virginia/HRL Facilities Management/FM Reports/FM INSP Report/P1 INSP FIXTURE DASHBOARD.png" alt="Inspection Dashboard" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>📊</div>'"></div>
@@ -328,6 +286,48 @@ ORDER BY 1 ASC, 2 ASC</div>
         </div>
       </div>
       <!-- /CARD: Mailroom Staff Arrival Tracker ======================== -->
+
+      <!-- CARD: Building Access Control System ========================= -->
+      <div class="project-card" data-card-name="Building Access Control System">
+        <div class="card-image"><img src="University of Virginia/HRL Conferences/Key Card Report.png" alt="Key Card Report" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🔐</div>'"></div>
+        <div class="card-body">
+          <div class="card-type">Oracle SQL + Batch Automation</div>
+          <div class="card-title">Building Access Control System</div>
+          <div class="card-desc">Automated offline door monitoring and reporting for residential buildings using Oracle SQL queries against Diebold's CS Gold access control system, with batch-scripted report generation via sqlcl.</div>
+          <div class="card-tags"><span class="tag">Oracle SQL</span><span class="tag">Batch Scripts</span><span class="tag">Diebold CS Gold</span><span class="tag">sqlcl</span><span class="tag">Automated Reports</span></div>
+        </div>
+        <div class="project-detail">
+          <div class="detail-section"><div class="detail-label">How It Worked</div><div class="detail-text">Windows Task Scheduler triggered batch files that launched Oracle sqlcl sessions, executed SQL queries against the Diebold CS Gold database, spooled results to CSV, and generated HTML reports — all without manual intervention. Reports tracked offline doors, voltage levels, parent device status, and alarm states across 30,000+ location IDs.</div></div>
+          <div class="detail-section"><div class="detail-label">Code Sample — Offline Door Report (Batch + Oracle SQL)</div>
+            <div class="code-snippet">-- offline_door_report.bat (Oracle sqlcl script)
+set encoding windows-1252
+set sqlformat csv
+spool on
+spool 'C:\sql_reports\offlinedoors.csv'
+SELECT TO_CHAR(t1.SESS_STATUS_DATE,
+  'MON-DD-YYYY HH24:MI:SS') AS "DATETIME",
+  t1.LOCATION, t1.LONGDES,
+  MY_BOOL_TO_STR(t1.ISOFFLINE) AS "ISOFFLINE",
+  PARENT_OFFLINE(t2.sess_status)
+    AS "IS PARENT OFFLINE?",
+  t3.CURRENTPOINTVALUE AS "VOLTAGE"
+FROM doorstates_vr t1
+INNER JOIN doors_vr t2
+  ON t1.location = t2.location
+INNER JOIN ALARMSTATES T3
+  ON t3.location = t1.location
+WHERE t1.ISOFFLINE = 1
+  AND t2.STATUS = 'ACT'
+ORDER BY 5 ASC, 3 DESC;
+spool off;</div>
+          </div>
+          <div class="detail-section"><div class="detail-label">Documentation</div>
+            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Access Control/alarms log table relationship.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Alarms Log Table Relationships</a></div>
+            <div class="pdf-link-wrap"><a href="University of Virginia/HRL Access Control/HRL Access Control Request Process.pdf" target="_blank" rel="noopener" class="pdf-link">📄 Access Control Request Process</a></div>
+          </div>
+        </div>
+      </div>
+      <!-- /CARD: Building Access Control System ======================== -->      
 
     </div>
   </div>
