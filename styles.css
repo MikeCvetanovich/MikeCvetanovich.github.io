@@ -169,7 +169,7 @@ section {
 
 .project-card {
   background: var(--card-bg);
-  border: 1px solid var(--copper);
+  border: 2px solid var(--copper-light);
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
