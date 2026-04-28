@@ -290,13 +290,13 @@ ORDER BY 1 ASC, 2 ASC</div>
       <!-- /CARD: Mailroom Staff Arrival Tracker ======================== -->
 
       <!-- CARD: Building Access Control System ========================= -->
-      <div class="project-card" data-card-name="Building Access Control System">
+      <div class="project-card" data-card-name="Housing Access Control">
         <div class="card-image"><img src="University of Virginia/HRL Access Control/Power BI Screenshots/VoltageAnalysis.PNG" alt="Voltage Analysis" loading="lazy" onerror="this.parentElement.innerHTML='<div class=card-image-placeholder>🔐</div>'"></div>
         <div class="card-body">
-          <div class="card-type">Oracle SQL + Batch Automation</div>
-          <div class="card-title">Building Access Control System</div>
-          <div class="card-desc">Automated offline door monitoring and reporting for residential buildings using Oracle SQL queries against Diebold's CS Gold access control system, with batch-scripted report generation via sqlcl.</div>
-          <div class="card-tags"><span class="tag">Oracle SQL</span><span class="tag">Batch Scripts</span><span class="tag">Diebold CS Gold</span><span class="tag">sqlcl</span><span class="tag">Automated Reports</span></div>
+          <div class="card-type">Power BI + Oracle SQL + Batch Automation + CS Gold</div>
+          <div class="card-title">Housing Access Control</div>
+          <div class="card-desc">Automated offline doors, Battery Powered Doors needed a Voltage Analysis report to monitor failures. Also reports for residential buildings using Oracle SQL queries against Diebold's CS Gold access control system, orignally batch-scripted report generation using a combination of sqlcl to grab date, then use PowerShell to insert an HTML table and email to stake holders.</div>
+          <div class="card-tags"><span class="tag">PowerShell</span><span class="tag">Oracle SQL</span><span class="tag">Batch Scripts</span><span class="tag">Diebold CS Gold</span><span class="tag">sqlcl</span><span class="tag">Automated Reports</span></div>
         </div>
         <div class="project-detail">
           <div class="detail-section"><div class="detail-label">How It Worked</div><div class="detail-text">Windows Task Scheduler triggered batch files that launched Oracle sqlcl sessions, executed SQL queries against the Diebold CS Gold database, spooled results to CSV, and generated HTML reports — all without manual intervention. Reports tracked offline doors, voltage levels, parent device status, and alarm states across 30,000+ location IDs.</div></div>
