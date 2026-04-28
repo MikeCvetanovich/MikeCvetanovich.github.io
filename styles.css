@@ -530,6 +530,9 @@ section {
   overflow-y: auto;
 }
 
+/* ===== VIDEO TOUR ===== */
+.detail-video { width: 100%; border-radius: 6px; margin-top: 6px; }
+
 /* ===== PDF LINK ===== */
 .pdf-link-wrap { margin-top: 0.5rem; }
 .pdf-link {
