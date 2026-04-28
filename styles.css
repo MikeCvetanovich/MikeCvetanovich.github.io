@@ -11,7 +11,7 @@
   --text-muted: #666666;
   --card-bg: #0a0a0a;
   --card-border: #1a1a1a;
-  --card-hover: #111111;
+  --card-hover: #23201c; /* Increased contrast for accessibility */
 }
 
 html { scroll-behavior: smooth; }
