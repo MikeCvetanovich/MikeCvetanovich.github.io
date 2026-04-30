@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(winget upgrade Microsoft.PowerShell --version 7.6.1 --accept-source-agreements --accept-package-agreements)"
+      "PowerShell(winget upgrade Microsoft.PowerShell --version 7.6.1 --accept-source-agreements --accept-package-agreements)",
+      "Bash(\"C:\\\\Users\\\\skyro\\\\OneDrive\\\\Desktop\\\\Mike Cvetanovich Dev Portfolio\\\\.venv\\\\Scripts\\\\pip.exe\" install \"rembg[cpu]\")",
+      "Bash('C:\\\\Users\\\\skyro\\\\OneDrive\\\\Desktop\\\\Mike Cvetanovich Dev Portfolio\\\\.venv\\\\Scripts\\\\python.exe' -c ' *)"
     ]
   }
 }
